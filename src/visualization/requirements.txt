@@ -1,0 +1,13 @@
+# Visualization tools depend on the repo training stack (PyTorch, mmcv, model code).
+# Install from the repository root after activating the thesis conda environment:
+#   conda run -n thesis pip install -r requirements.txt
+#   conda run -n thesis pip install -r visualization/requirements.txt
+#
+# MLDG CAMs also require mmcls (provided by the thesis environment setup).
+
+-r ../requirements.txt
+
+grad-cam==1.5.5
+gradio==6.9.0
+pandas==2.3.3
+Pillow==11.0.0

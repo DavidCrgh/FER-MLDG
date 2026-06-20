@@ -1,0 +1,187 @@
+% For tips on writing the thesis, see http://www.tug.org/pracjourn/2008-1/mori/mori.pdf
+
+% Two side to save paper
+% openrigth means to put the chapter tittle on the right pages
+\documentclass[12pt,letterpaper,twoside,openright]{book}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+% Language support
+\usepackage[english,spanish]{babel}
+
+\usepackage[table,xcdraw]{xcolor}
+
+
+\newenvironment{dedication}
+{
+   \cleardoublepage
+   \thispagestyle{empty}
+   \vspace*{\stretch{1}}
+   \hfill\begin{minipage}[t]{0.66\textwidth}
+   \raggedright
+}%
+{
+   \end{minipage}
+   \vspace*{\stretch{3}}
+   \clearpage
+}
+
+\newenvironment{acreditation}
+{
+   \cleardoublepage
+   \thispagestyle{empty}
+   %\vspace*{\stretch{1}}
+   
+   %\raggedright
+}%
+{
+   
+   %\vspace*{\stretch{3}}
+   \clearpage
+}
+
+
+\newenvironment{notetoeditor}
+{
+   \begin{tcolorbox}[title={Nota al editor},colback=yellow!5!white]
+}%
+{
+   \end{tcolorbox}
+}
+
+\newcommand*{\captionsource}[2]{%
+	\caption[{#1}]{%
+		#1%
+		\\\hspace{\linewidth}%
+		\textbf{Source:} #2%
+	}%
+}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\selectlanguage{english}
+%\usepackage[spanish]{datetime}
+
+% We define some strings that will use along
+\def \thesiskeywords {thesis, master degree, your topics here}
+\def \pdfauthor {David Valverde Garro}
+\def \thesistitle{Enhancing label distribution generation for lightweight facial expression recognition with local-global features and transformer guidance}
+
+% Custom-commands and definitions
+% See this file for defining the keywords that will show up on the PDF file
+\input{../packages}
+\input{body/glossary-entries}
+
+\newtoggle{paper}
+\settoggle{paper}{true}
+
+\usepackage{csvsimple}
+
+
+\begin{document}
+
+% This is the first part of the document (frontmatter), use Roman numeration
+\frontmatter
+
+% Simple style
+\pagestyle{empty}
+
+% The front page of the thesis is in this page, Name of the school and the program can be changed here. Supervisor name gets changed here.
+\selectlanguage{english}
+\input{body/front-page}
+
+%
+
+\selectlanguage{spanish}
+%\begin{acreditation}
+% The ghesis act goes here.
+%\makebox[\linewidth]{
+    \includegraphics[width=0.75\paperwidth,height=1\paperheight]{../images/certificate.pdf}
+%}
+
+%\end{acreditation}
+
+
+\begin{dedication}
+\selectlanguage{english}
+If the author wants, he can put a dedication here. 
+\HRule\\
+\selectlanguage{spanish}
+Y la versión en español puede ir acá.
+\selectlanguage{english}
+\end{dedication}
+
+%%%%%%%%%ISSUE NUMBER 1%%%%%%%%%%%
+\chapter*{Acknowledgements}
+\doublespacing
+This section can be used for the acknowledgements.
+
+% The abstract is included on a separte file here
+\input{body/abstract}
+
+%Table of contents is generated here
+\tableofcontents
+
+%List of figures goes here
+\listoffigures
+
+%List of tables is generated here
+\listoftables
+
+\input{body/glossary}
+
+\mainmatter
+% Use double space
+\doublespacing
+% Now fancy style
+\pagestyle{fancy}
+\setlength{\headheight}{14.5pt}
+% Left the right header clean
+\rhead{}
+
+\renewcommand{\chaptername}{Chapter}
+
+\doublespacing
+
+% The section introduction is included
+\input{body/introduction.tex}
+% Theoretical framework contents
+\input{body/theoretical-framework}
+% Hypothesis and objetives.
+\input{body/hypothesis-objectives}
+% Methodology
+\input{body/methodology}
+%Design and developed work
+\input{body/design}
+% Results
+\input{body/results}
+%Disussion
+\input{body/discussion}
+%Conclusions and future work
+\input{body/conclusions}
+%Appendix
+\input{body/appendix}
+
+
+
+
+% Final pages
+\backmatter
+
+% Use single space
+\singlespacing
+
+% Bibliography
+\cleardoublepage
+\renewcommand{\bibname}{References}
+
+\refstepcounter{chapter}
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{plainnat}
+\bibliography{references}{}
+
+\doublespacing
+
+
+
+\end{document}

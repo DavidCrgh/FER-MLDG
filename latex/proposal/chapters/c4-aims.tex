@@ -1,0 +1,90 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}}
+\begin{document}
+
+\chapter{Scope of this research}
+
+This chapter defines the bounds of what will be covered by this research project.
+We describe the objectives in alignment with the proposal outlined in the previous chapter.
+We also define the limitations on which areas of study our thesis will comprehend.
+Finally, we provide a concrete list of deliverables required for successful completion.
+\newpage
+
+\section{Objectives}
+
+This section defines the general and specific objectives of our research proposal.
+The completion of said objectives is necessary to fully conduct the proposed study.
+
+\subsection{General objective}
+
+Based on our proposal to address the previously presented problem, we determine the general objective of our research project to be as follows: \\
+
+\textit{Study the facial expression recognition accuracy obtained when training EfficientFace \cite{eff-face2021} with a label distribution generator enhanced with local-global feature extraction modules and knowledge from a vision transformer model \cite{apvit2023}. }
+
+\subsection{Specific objectives}
+
+In order to successfully complete our general objective, we derive the following specific objectives:\\
+
+\begin{enumerate}
+    \item Enhance the label distribution generator (LDG) by loading the pretrained weights from APViT's backbone, adding local-global feature extraction modules from EfficientFace, and training the LDG to imitate APViT's outputs using label distribution learning.
+
+    \item Study the performance changes induced by each modification to the LDG by means of ablation study and determine the best combination.
+    
+    \item Train two EfficientFace variants, one using the modified LDG and one using APViT, and study the performance differences with respect to the baseline and other state-of-the-art approaches.
+    
+\end{enumerate}
+
+\section{Delimitations}
+
+The following section outlines the delimitations of this research project. These are the specific boundaries set for the study, which limit the scope and define the operational framework within which the research will be conducted. 
+
+\begin{itemize} 
+
+\item This research will focus exclusively on the static facial expression recognition task with images annotated under the 7 or 8 class discrete model.
+
+\item This project will not extend to adjacent research areas such as facial detection, facial identification, dynamic (video) FER, micro-expression recognition, or FER with facial action units.
+
+\item The preprocessing steps for the input images will be carried out as outlined by the authors of EfficientFace and APViT in their respective papers \cite{eff-face2021, apvit2023}.
+
+\item Only the face alignment methods described in the base papers \cite{eff-face2021, apvit2023} will be used, i.e., MTCNN \cite{mtcnn2016} or RetinaFace \cite{retinaface2020}.
+
+\item The materials used in this research are limited to publicly available resources. This includes datasets, research papers, source code, programming languages,  packages, and other language extensions.
+
+\item The state-of-the-art review that backs this research covers the period from January, 2021 to  March, 2024. This range is not strict, and other publications may be included depending on their relevance.
+
+\item Only deep learning methods for facial expression recognition will be considered for the state-of-the-art comparison.
+
+\item Only the deliverables specified in section \ref{sec:deliv} will be counted as necessary for the completion of the project.
+
+\end{itemize}
+
+\section{Deliverables}\label{sec:deliv}
+
+In order to better measure the future progress to be made while working on this research project, we define the deliverables required for completion.
+The list of deliverables with their identifiers and descriptions is specified in table \ref{tab:deliverables}.
+
+\input{tables/deliverables}
+
+% \begin{itemize}
+%     \item Modified label distribution generator (LDG) with pre-trained weights from APViT, and local-global feature extraction modules.
+
+%     \item Script for training the modified LDG using APViT’s outputs as the target.
+
+%     \item Script for training the EfficientFace network using a given network's outputs as the target.
+
+%     \item Experimental design proposal detailing:
+%         \begin{itemize}
+%             \item An ablation study to measure the impact of the modifications on the LDG.
+
+%             \item A performance comparison measuring the effectiveness of the modified LDG when training EfficientFace.
+%     \end{itemize}
+
+%     \item A script to automate the experimental runs and data collection.
+
+%     \item A report detailing the statistical results and conclusions obtained after executing the experimental design.
+
+%     \item A final thesis document encapsulating the previous deliverables and any other context relevant to this study.
+% \end{itemize}
+
+
+\end{document}

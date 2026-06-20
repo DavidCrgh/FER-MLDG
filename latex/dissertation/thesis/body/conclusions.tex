@@ -1,0 +1,37 @@
+\chapter{Conclusions and Future Work}
+\epigraph{``Another quote.''}{\vspace{10pt}Another author}
+\label{chapter:conclusions-fw}
+
+\newpage
+
+This chapter presents the final conclusions obtained through the research effort and the future work that can be derived. 
+
+\section{Conclusions}
+
+\begin{itemize}
+	\item The hypothesis is rejected: no enhanced EfficientFace configuration surpassed the published AffectNet baseline. The proposed variant, EfficientFace trained with soft labels from the M-LDG, reached 63\% on AffectNet-7 and 55.99\% on AffectNet-8 against a published reference of 63.70\% and 59.89\%.
+
+	\item APViT guidance substantially improved the M-LDG, adding roughly 8 to 9 percentage points and lifting it to 64.34\% on AffectNet-7 and 57.71\% on AffectNet-8, confirming that the first hop of the two-stage transfer pipeline behaved as intended.
+
+	\item The second hop of the transfer pipeline failed: a capacity ratio of approximately 44 to 1 between the M-LDG and EfficientFace was too wide for label distribution learning to bridge, and the student network fell below its teacher rather than surpassing it as observed in the original EfficientFace paper.
+
+	\item FER-pretrained backbone weights and local-global feature extraction modules both contributed negligibly to M-LDG accuracy in Phase I, though for different reasons: the former's modules were designed for the shallow EfficientFace architecture and became redundant in the deeper IR50, while the latters's FER-pretrained weights covered only the first three backbone stages, leaving the upper layers and classification head without FER-specific initialization.
+
+	\item Replacing the full APViT transformer with the lighter M-LDG as the direct teacher for EfficientFace in Phase II produced no statistically significant difference in student accuracy, suggesting that the computationally lighter intermediary can stand in for the heavier model without a meaningful loss in transfer quality; this finding remains tentative, however, given the limited number of experimental runs available for that comparison.
+\end{itemize}
+
+
+\section{Future Work}
+
+\begin{itemize}
+
+
+	\item Reducing the M-LDG network size to better approximate the capacity of EfficientFace could improve the second hop of the transfer pipeline. Another approach could be to discard the APViT component and instead replicate the study with another network acting as intermediary. This keeps in line with the evidence from Mirzadeh et al.'s \cite{mirzadeh2020takd} where carefully selected intermediary network sizes can improve the transfer efficiency.
+
+	\item The contempt class warrants deeper investigation: its recall remained near zero for the ablation baseline and recovered only partially under the optimized M-LDG, and the tentative observation that contempt recognition relies predominantly on the mouth region should be validated with quantitative, region-weighted evidence.
+
+	\item Revisiting the pipeline with publicly available AffectNet-pretrained weights, should provide a better gain in performance. This could be with the same APViT network or choosing another similar method that is confirmed to have the weights available.
+	
+	\item The lack of statistical power in the phase II experiments warrants a larger sample size. This could be induced by introducing additional factors into the experimental design like use of upscaling and teacher network size. This could serve to better approximate the hard limit of the knowledge transfer pipeline as well as finding better configurations for the second hop.
+
+\end{itemize}

@@ -1,0 +1,19 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}clccclc@{}}
+\toprule
+\textbf{Run} &  & \textbf{A} & \textbf{B} & \textbf{C} &  & \textbf{Label} \\ \midrule
+1            &  &            &            &            &  & (1)            \\
+2            &  & +          &            &            &  & a              \\
+3            &  &            & +          &            &  & b              \\
+4            &  & +          & +          &            &  & ab             \\
+5            &  &            &            & +          &  & c              \\
+6            &  & +          &            & +          &  & ac             \\
+7            &  &            & +          & +          &  & bc             \\
+8            &  & +          & +          & +          &  & abc            \\ \bottomrule
+\end{tabular}
+\caption{Treatment combinations for phase I}
+\label{tab:p1-runs}
+\end{table}

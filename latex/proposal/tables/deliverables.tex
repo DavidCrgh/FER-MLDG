@@ -1,0 +1,40 @@
+\begin{center}
+\ra{1.5} % Adjusts row spacing
+\begin{longtable}{cp{0.2\textwidth}p{0.6\textwidth}}
+\label{tab:deliverables}\\
+\toprule
+\textbf{ID} & \textbf{Name} & \textbf{Description} \\ 
+\midrule
+\endfirsthead
+
+\toprule
+\textbf{ID} & \textbf{Name} & \textbf{Description} \\ 
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\endfoot
+
+\bottomrule
+\caption{List of deliverables}\\
+\endlastfoot
+
+COD-01\label{ac:cod-01} & Modified LDG & Modified label distribution generator (LDG) with pre-trained weights from APViT, and local-global feature extraction modules. \\ 
+COD-02\label{ac:cod-02} & LDG training script & Script for training the modified LDG using APViT’s outputs as the target. \\ 
+COD-03\label{ac:cod-03} & EfficientFace training script & Script for training the EfficientFace network using a given network's outputs as the target. \\ 
+COD-04 & Experiment script & A script to automate the experimental runs and data collection. \\ 
+DOC-01 & Experimental design & Experimental design proposal detailing:
+\begin{itemize}
+    \item An ablation study to measure the impact of the modifications on the LDG.
+    \item A performance comparison measuring the effectiveness of the modified LDG when training EfficientFace.
+\end{itemize} \\ 
+DAT-01 & Phase 1 data & Raw data gathered from the execution of the phase 1 experimental design.\\
+DAT-02 & Phase 2 data & Raw data gathered from the execution of the phase 2 experimental design.\\
+DOC-02 & Statistical report & A report detailing the results and conclusions obtained after conducting the statistical analysis of the experimental data. \\ 
+DOC-03 & Article draft & A draft for a scientific article containing the method and findings of this research. Intended to be published in a scientific journal. \\ 
+DOC-04 & Final thesis document & A final thesis document encapsulating the previous deliverables and any other context relevant to this study. \\ 
+PRE-01 & Thesis defense & Materials required for the final thesis defense presentation.\\ 
+
+\end{longtable}
+\end{center}

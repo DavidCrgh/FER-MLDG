@@ -1,0 +1,76 @@
+\begin{figure}
+    \centering
+
+% First semester
+\begin{ganttchart}[
+    %vgrid,
+    canvas/.append style={fill=none},
+    expand chart=\textwidth,
+    title/.append style={shape=rectangle, fill=black!5},
+    title height=1,
+    bar/.append style={fill=green!40},
+    bar height=.4,
+    bar label font=\normalsize\color{black!70},
+    y unit title=.6cm
+]
+{1}{17}
+\gantttitle{Semester 2, 2024}{17}\\
+\gantttitle{August}{4}
+\gantttitle{September}{4}
+\gantttitle{October}{5}
+\gantttitle{November}{4}\\
+\gantttitlelist{1,...,17}{1}\\
+
+% Tasks
+\ganttbar{TC-01}{1}{2}\\
+\ganttbar{TC-02}{3}{5}\\
+\ganttlinkedbar{TC-03}{6}{7} \\
+\ganttbar{TC-04}{8}{9} \\
+\ganttlinkedbar{TC-05}{10}{11}\\
+\ganttlinkedbar{TE-01}{12}{14}\\
+\ganttlinkedbar{TS-01}{15}{15}\\
+\ganttlinkedbar{TE-02}{16}{16}\\
+\ganttlinkedbar{TS-02}{17}{17}\\
+\ganttbar{TD-01}{14}{17}
+%\ganttlinkedbar{TE-03}{16}{17}
+
+%Misc links
+%\ganttlink{elem2}{elem4}
+\begin{scope}[on background layer]
+    \ganttlink{elem2}{elem4}
+    \ganttlink{elem4}{elem7}
+    %\ganttlink[link mid=0.2]{elem6}{elem9}
+\end{scope}
+
+\end{ganttchart}\\
+
+% Second semester
+\begin{ganttchart}[
+    %vgrid,
+    canvas/.append style={fill=none},
+    expand chart=\textwidth,
+    title/.append style={shape=rectangle, fill=black!5},
+    title height=1,
+    bar/.append style={fill=green!40},
+    bar height=.4,
+    bar label font=\normalsize\color{black!70},
+    y unit title=.6cm
+]
+{1}{17}
+\gantttitle{Semester 1, 2025}{17}\\
+\gantttitle{February}{4}
+\gantttitle{March}{4}
+\gantttitle{April}{4}
+\gantttitle{May}{5}\\
+\gantttitlelist{1,...,17}{1} \\
+
+\ganttbar{TE-03}{1}{3}\\
+\ganttlinkedbar{TS-03}{4}{6}\\
+\ganttlinkedbar{TD-01}{7}{15}\\
+\ganttlinkedbar{TP-01}{16}{17}
+
+\end{ganttchart}
+
+    \caption[Gantt chart of the planned research activities]{Gantt chart of the planned research activities.}
+    \label{fig:gantt}
+\end{figure}

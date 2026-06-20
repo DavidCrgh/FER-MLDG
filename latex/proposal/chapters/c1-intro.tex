@@ -1,0 +1,30 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}}
+\begin{document}
+
+\chapter{Introduction}
+
+Facial expression recognition (FER) plays a crucial role within human-computer interaction (HCI), enabling automated detection of human emotions from facial data \cite{li2022survey}.
+FER has also attracted researchers in the field of affective computing, due to its potential applications in creating systems that detect, understand, and replicate emotions \cite{karnati2023survey}.
+Thanks to advancements in computer vision and deep learning (DL) methods, FER technology has improved significantly over the recent years \cite{li2022survey}.
+This thesis focuses on the subfield of lightweight FER for deployment on resource-constrained environments, which demands a balance between accuracy and efficiency.\\
+
+FER systems have a wide range of applications, including sociable robots, medical treatment, driver safety, marketing, education, psychological research, and security \cite{li2022survey, canal2022survey, karnati2023survey, sajjad2023survey}.
+Despite this, FER faces several challenges such as occlusion, pose and lighting conditions, subject variability, data annotation, resolution, and more \cite{li2022survey, sajjad2023survey}.
+On top of this, real-world usage scenarios such as edge computing require the highest level of efficiency in order to be feasible \cite{wu2020edge}.\\
+
+Given the proliferation of mobile and edge platforms with a limited resource budget, there is an increasing need for lightweight FER models.
+Recent studies have focused on creating optimized deep learning methods for computer vision \cite{howard2017mobilenet, zhang2018shufflenet}, with some even applying such methods directly to FER \cite{eff-face2021, lengwe2023pattlite}.
+These studies have shown that it is possible to significantly optimize these models while maintaining or even improving the system's accuracy.\\
+
+This thesis proposal aims to enhance the lightweight FER network, EfficientFace \cite{eff-face2021}, in order to improve its accuracy while maintaining its low resource cost.
+Part of this process involves modifying the network's training method by employing a high-cost, high-accuracy FER model \cite{apvit2023} that can be discarded during inference.
+The rest of this document lays out the context and planification of the associated scientific study.\\
+
+We now describe the structure and remaining chapters of this thesis proposal. 
+Chapter 2 serves as the theoretical framework on which our proposal is based.
+Chapter 3 formally presents the problem and proposed approach to treat it.
+Chapter 4 defines the scope of the associated research project.
+Lastly, chapter 5 provides a detailed planification of the study intended to test the validity of our proposal.
+
+\end{document}

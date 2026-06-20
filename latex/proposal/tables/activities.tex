@@ -1,0 +1,39 @@
+\begin{center}
+\ra{1.5} % Adjusts row spacing
+\begin{longtable}{cp{0.55\textwidth}cp{0.20\textwidth}}
+    \label{tab:activities}\\
+    \toprule
+    \textbf{Code} & \textbf{Description} & \textbf{Weeks} & \textbf{Deliverable} \\
+    \midrule
+    \endfirsthead
+
+    \toprule
+    \textbf{Code} & \textbf{Description} & \textbf{Weeks} & \textbf{Deliverable} \\
+    \midrule
+    \endhead
+
+    \midrule
+    \multicolumn{4}{r}{{Continued on next page}} \\
+    \endfoot
+
+    \bottomrule
+    \caption{List of activities} \\
+    \endlastfoot
+    
+    TC-01 & Train the baseline APViT and EfficientFace networks on both datasets using their original scripts for later use. & 2 &  \\ 
+    TC-02 & Modify the LDG network so that: it has the same structure as APViT’s backbone, and it incorporates the local-global feature extraction modules from EfficientFace. & 3 & Modified LDG \\ 
+    TC-03 & Write the training script for the modified LDG. & 2 & LDG training script\\ 
+    TC-04 & Modify EfficientFace’s training script so that the guidance network is a selectable parameter. & 2 & EfficientFace training script\\ 
+    TC-05 & Write a script to automate the experiment execution and data collection process. & 2 & Experiment script \\ 
+    TE-01 & Execute phase 1 of the proposed experimental design. & 3 & Phase 1 data \\ 
+    TS-01 & Conduct the preliminary statistical analysis of phase 1 data to determine the best treatment configuration and hyperparametrization process. & 1 &  \\ 
+    TE-02 & Execute phase 2 of the proposed experimental design. & 1 & Phase 2 data \\ 
+    TS-02 & Conduct the preliminary statistical analysis of phase 2 data and determine hyperparametrization process. & 1 &  \\ 
+    TE-03 & Run any additional experiments as determined by the results of activities TS-01 and TS-02. & 3 &  \\ 
+    TS-03 & Conduct the final statistical analysis of all experimental data gathered so far and elaborate a report with the corresponding conclusions. & 3 & Statistical report \\ 
+    TD-01 & Elaborate the scientific article draft reporting our method and findings. & 4 & Article draft \\ 
+    TD-02 & Elaborate the final thesis document encapsulating our research findings and other important context. & 8 & Final thesis document \\ 
+    TP-01 & Prepare the materials for the final thesis defense presentation before the school’s committee. & 2 & Thesis defense \\ 
+
+\end{longtable}
+\end{center}

@@ -1,0 +1,19 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+                                 & \multicolumn{4}{c}{\textbf{Factors}} \\
+ &
+  \begin{tabular}[c]{@{}c@{}}Pretrained \\ Weights\end{tabular} &
+  \begin{tabular}[c]{@{}c@{}}GL Feature \\ Extraction\end{tabular} &
+  \begin{tabular}[c]{@{}c@{}}Transformer\\ Guidance\end{tabular} &
+  Dataset \\ \midrule
+\multirow{2}{*}{\textbf{Levels}} & Yes    & Yes   & Yes   & AffectNet (7 class)      \\
+                                 & No     & No    & No    & AffectNet (8 class)   \\ \bottomrule
+\end{tabular}
+\caption{Factors and levels of phase I}
+\label{tab:p1-factors}
+\end{table}

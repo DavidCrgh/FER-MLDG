@@ -1,0 +1,206 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}}
+\begin{document}
+
+\chapter{Methodology}
+
+This chapter outlines the planification and design employed to meet the proposed objective of this study. 
+It provides a detailed description of the hypothesis,  instruments, experimental design, resource requirements and planned activities to ensure a replicable and rigorous process. 
+Through this detailed exposition, the chapter aims to provide a clear road map of the elaboration of this research.
+\newpage
+
+\section{Hypothesis}
+
+Based on the literature review and objectives of this research project, we pose the following hypothesis:\\
+
+\textit{``Training EfficientFace with a label distribution generator enhanced with one or more of: FER pretrained backbone weights, local-global feature extraction modules, and/or vision transformer guidance, should increase its facial expression recognition accuracy on the AffectNet dataset when compared to the original baseline''.}
+
+\section{Instruments} \label{c5:ins}
+
+The following section gives a brief overview of the instruments used to measure the performance of our proposal and compare its different variations.
+We plan to employ the accuracy metric and confusion matrices as a means of quantitative measurement. On the other hand, class activation maps are intended as a qualitative tool for network explainability.
+
+\subsection{Accuracy} \label{c5:ins:acc}
+
+\begin{equation} \label{eq:acc}
+    Accuracy = \frac{|P_c|}{|D|}
+\end{equation}
+
+The standard or top-1 accuracy will be used as the main metric for performance comparison between models. 
+This metric is calculated by taking the number of correctly classified samples and dividing it by the total number of samples in the dataset $D$. 
+The set of correctly classified samples is denoted by $P_c \in P$, where $P$ is the superset of predictions for dataset $D$.
+As such, accuracy is calculated using the formula found in Eq. \ref{eq:acc}. 
+Since the FER task is a multi-class classification problem, a sample is deemed correctly classified when the class with the highest predicted probability matches the true class label.
+
+\subsection{Confusion matrices}
+
+Confusion matrices can be employed to better observe the performance of a classification algorithm. 
+The per-class accuracy can be derived from this matrix, as well as the relations between specific true-predicted label pairs. 
+For example, a model might be prone to misclassifying disgust as anger, or surprise as fear.\\
+
+We assume the confusion matrix $M \in \mathbb{R}^{k \times k}$, where $k$ is the number of classes in the dataset. 
+Each cell $m_{i,j}$ corresponds to the relative frequency of samples belonging to class $i$ and classified as $j$ by the model. 
+The formulation for the values in each cell can be found in Eq. \ref{eq:cmat}, where $P_y$ is the set of predictions with true label $y = i$, and $P_{\hat{y}}$ is the set of predictions with label $\hat{y} = j$.
+
+\begin{equation} \label{eq:cmat}
+    m_{i,j} = \frac{|P_{y=i} \cap P_{\hat{y}=j}|}{|P_{y=i}|}
+\end{equation}
+
+Note that by using this formulation, the per-class accuracy can be extracted by looking only at the diagonal of the matrix. 
+Additionally, the average accuracy can be obtained by computing the average of the values on the diagonal.
+
+\subsection{Class activation maps}
+
+First proposed by Zhou et al. \cite{cams2016}, class activation maps (CAMs) are a powerful tool for improving CNN explainability. 
+Figure \ref{fig:cams} shows an example of CAMs calculated from EfficientFace \cite{eff-face2021}.\\
+
+This method works by taking the output feature maps of the last convolutional layer with $k$ feature maps and calculating the spatial average of each map using a global average pooling (GAP) layer. 
+This operation yields a vector of $k$ scalars, corresponding to the average of the activations from each map.
+Next, for each output class $c$, a linear model is learned to determine a set of weights $w^c_k$ for $k = 1, \ldots, n$. 
+These weights measure the importance of a particular feature map $k$ with regard to a class $c$. 
+Finally, the CAM of class $c$ can be computed by Eq. \ref{eq:cam}, where  $f_k(x,y)$ denotes the activation of feature map $k$ of the last convolutional layer at pixel coordinates $(x,y)$.
+
+\begin{equation} \label{eq:cam}
+    M_c(x,y) = \sum_k w^c_k f_k(x,y)
+\end{equation}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/chap5/ef-cams.png}
+    \caption[Class activation map examples]{Class activation map (CAM) examples for the EfficientFace network. Image source \cite{eff-face2021}.}
+    \label{fig:cams}
+\end{figure}
+
+\section{Dataset: AffectNet}
+
+We intend to use AffectNet by Mollahosseini et al. \cite{affnet2019} as the dataset for the execution of our experimental design.
+Since EfficientFace \cite{eff-face2021} and APViT \cite{apvit2023} both test on  AffectNet, we have elected to use this database as a fair point of comparison.
+Additionally, the dataset counts with both 7 and 8 emotion class subsets. 
+The 7 class subset can be taken as an easier problem than the 8 class one, with EfficientFace achieving an accuracy of 63.7\% and 59.89\% respectively.
+This results in a better distinction of the levels for this factor.\\
+
+AffectNet is one of the largest FER datasets currently available, containing approximately 1 million images.
+This set was gathered automatically by querying search engines with emotion related keywords.
+The images are annotated under the categorical model with 11 emotion classes, as well as with valence-arousal values.
+Out of the total set of images, 450,000 of them were manually annotated by hired personnel.
+We have elected to follow the same procedure as \cite{eff-face2021, apvit2023} for preprocessing, training, and evaluating of AffectNet.
+The classes for the 7 emotion subset correspond to neutral, happiness, sadness, surprise, fear, disgust, and anger, with the 8 class subset adding the contempt category.
+
+
+\section{Experiment design}
+
+In the following section we present a proposal for the experimental design of this study.
+We adopt the guidelines for designing experiments defined by Montgomery \cite{montgomery2017design} as the basis of our design.
+We split our study in two phases in order to more rigorously test our hypothesis and reduce training time.
+
+\subsection{Response variables}
+
+For both phases of this study, the accuracy metric described in section \ref{c5:ins:acc} will be taken as the sole response variable.
+Specifically, we capture the accuracy obtained on the evaluation or test set after executing the full training procedure.
+This aligns with the common practice found in other FER studies that list accuracy as the main metric for comparison with other approaches \cite{li2022survey, karnati2023survey, canal2022survey}.
+
+\subsection{Phase I: LDG ablation study}
+
+The first phase of the experimental design will focus on analyzing the performance changes induced by modifying the LDG network that guides EfficientFace's training. 
+This will be accomplished through an ablation study to evaluate the effects of the proposed modifications. 
+During this phase, we will concentrate solely on the accuracy response of the LDG for the FER task, without training or evaluating EfficientFace yet. 
+As a secondary objective for this phase, we intend to select the best modified LDG configuration to use in phase II.
+
+\subsubsection{Factors and levels}
+
+The \textbf{design factors} for this phase are identified as the three proposed modifications to the LDG mentioned in section \ref{c3:proposal}, as well as the training dataset.
+Since we are conducting an ablation study, the levels of the factors are determined to be binary, i.e. present or not present.
+The design factors and their levels are summarized in table \ref{tab:p1-factors}.\\
+
+\input{tables/p1-factors}
+
+The following is a brief description of each of the factors:
+
+\begin{itemize}
+    \item \textbf{Pretrained weights}: load the LDG's convolutional layers with the weights from APViT's backbone that have already been pretrained on the FER task. We'll refer to this factor as A.
+
+    \item \textbf{Global-local feature extraction}: incorporate the Local-feature Extractor and Channel-spatial Modulator modules into the LDG network. We'll refer to this factor as B.
+
+    \item \textbf{Transformer guidance}: train the LDG to imitate APViT's outputs. When this factor is set to `No', the LDG will be trained to learn the true labels from the dataset. We'll refer to this factor as C.
+
+    \item \textbf{Dataset}: train on either 7 or 8 class AffectNet with all images preprocessed following the same procedure as in \cite{eff-face2021} and \cite{apvit2023}. %We'll refer to this factor as D.
+    
+\end{itemize}
+
+%As for other factors, we identify the dataset used for training and evaluation as a \textbf{controlled nuisance} factor. 
+%The selected levels for this factor are the RAF-DB \cite{rafdb2019}and AffectNet \cite{affnet2019} datasets. 
+%For both of these sets, all images will be preprocessed following the same procedure as in \cite{eff-face2021} and \cite{apvit2023}.
+
+\subsubsection{Experiments}
+
+We consider that a \textbf{$2^k$ factorial design} is best suited for the proposed ablation study, with $k=4$.
+This will allow us to explore the effects of each modification with both AffectNet subsets, as well as the interactions between them.
+Under this scheme, we will execute the 8 treatment combinations found in table \ref{tab:p1-runs} with each subset to yield 16 total experimental runs.
+Additional data may be gathered from a hyperparametrization procedure which will be defined based on the preliminary results from the initial experiments.
+
+\input{tables/p1-runs}
+
+\subsection{Phase II: EfficientFace training study}
+
+The second phase of the study will focus on analyzing the effectiveness of using the modified LDG as an intermediary to transfer knowledge from APViT to EfficientFace.
+Here, we will take the best LDG configuration from phase I and use it to train EfficientFace following the original procedure \cite{eff-face2021}.
+Next, we will train an alternative EfficientFace that uses APViT directly as its label distribution generator, forgoing the modified LDG.
+A comparative experiment will be conducted to determine the best approach out of these two.
+
+\subsubsection{Factors and levels}
+
+The design factors for this phase are the guidance network (factor G), and the dataset (factor D).
+The guidance network is the network whose outputs EfficientFace is trained to imitate, with levels: modified LDG, and APViT.
+We also retain the AffectNet 7 and 8 class subsets as the levels for the dataset factor.
+Table \ref{tab:p2-factors} shows the factors and levels for this phase.
+
+\input{tables/p2-factors}
+
+\subsubsection{Experiments}
+
+The design for this phase also follows a \textbf{$2^k$ factorial design} with $k=2$.
+The 4 treatment combinations shown in table \ref{tab:p2-runs} will be executed in a randomized order.
+In a similar fashion to phase I, the data gathered from these combinations may be complemented with additional runs from a controlled variation in the networks' hyperparameters.
+
+\input{tables/p2-runs}
+
+\subsection{Execution and data collection}
+
+The run execution and data collection for both phases will be carried out automatically via a Python script. This script will compute all factor combinations, queue the experimental runs in a random order, execute the network training and evaluation scripts, and save the final accuracy results for later analysis.
+
+\subsection{Statistical analysis}
+
+In both phases, the data from the experiments will be analyzed to determine if there is a statistically significant difference between treatment combinations.
+In phase I, at least one of the treatment combinations, excluding (1), must present a significant increase in accuracy for our hypothesis to not be rejected at this stage.
+As for phase II, the `LDG' group of the guidance network factor must show a significant increase to prove our hypothesis.\\
+
+To carry out this hypothesis testing procedure, we will employ the analysis of variance (ANOVA) technique.
+ANOVA assumes three conditions about the analyzed samples to be true: independence, normality, and equal variance.
+While the independence condition can be assured through randomized runs, the other two conditions will have to be checked manually.
+If the assumptions aren't met, we will proceed to apply data transformations in increasing order of aggressiveness.
+If this still doesn't work, we will apply a non-parametric test such as Kruskal-Wallis or any other similar tool.\\
+
+We also intend to enrich our results with findings from additional tools such as the confusion matrices and CAMs mentioned in section \ref{c5:ins}.
+While the results from these instruments are not intended to  test our hypothesis, they can provide a more detailed view of our proposal's behaviour.
+
+\section{Resources}
+
+\input{tables/resources}
+
+The resources required to carry out the proposal are specified in table \ref{tab:resources} of this document.
+Since the network weights for APViT trained on AffectNet are currently unavailable, this resource will be requested from the authors. 
+If no response is received, the model will be trained from scratch using the script found in the model's GitHub repository \footnote{\href{https://github.com/youqingxiaozhua/APViT} {APViT repository}}.
+
+\section{List of activities}
+
+The following section specifies the activities necessary to carry out the  research proposal.
+Table \ref{tab:activities} specifies the activities along with their estimated duration in weeks and their resulting deliverable.
+Note that certain activities will be conducted concurrently with others.
+The descriptions of the related deliverables can be found in chapter four, table \ref{tab:deliverables}.
+Figure \ref{fig:gantt} shows the Gantt chart laying out the activity roadmap across two semesters, where each semester consists of 17 weeks.
+
+\input{tables/activities}
+
+\input{charts/gantt}
+
+\end{document}

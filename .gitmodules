@@ -1,0 +1,6 @@
+[submodule "src/networks/APViT"]
+	path = src/networks/APViT
+	url = https://github.com/DavidCrgh/APViT.git
+[submodule "src/networks/EfficientFace"]
+	path = src/networks/EfficientFace
+	url = https://github.com/DavidCrgh/EfficientFace.git

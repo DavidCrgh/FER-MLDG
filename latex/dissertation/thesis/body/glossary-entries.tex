@@ -1,0 +1,112 @@
+% Glossary entries. Add terms with \newglossaryentry{label}{name=..., description=...}
+% Add acronyms with \newacronym{label}{ACRONYM}{Full form}
+% Reference in text: \gls{label}, \Gls{label}, \glspl{label}, or \acrshort{label}, \acrlong{label}, \acrfull{label}
+
+% --- Acronyms ---
+\newacronym{apvit}{APViT}{Attention Pooling Vision Transformer}
+\newacronym{fer}{FER}{Facial Expression Recognition}
+\newacronym{hci}{HCI}{Human-Computer Interaction}
+\newacronym{dl}{DL}{Deep Learning}
+\newacronym{cv}{CV}{Computer Vision}
+\newacronym{cnn}{CNN}{Convolutional Neural Network}
+\newacronym{flops}{FLOPs}{Floating Point Operations}
+\newacronym{itw}{ITW}{In-the-Wild}
+\newacronym{ldl}{LDL}{Label Distribution Learning}
+\newacronym{ldg}{LDG}{Label Distribution Generator}
+\newacronym{edl}{EDL}{Emotion Distribution Learning}
+\newacronym{sll}{SLL}{Single-Label Learning}
+\newacronym{mll}{MLL}{Multi-Label Learning}
+\newacronym{vit}{ViT}{Vision Transformer}
+\newacronym{mhsa}{MHSA}{Multi-Head Self-Attention}
+\newacronym{nlp}{NLP}{Natural Language Processing}
+\newacronym{sgd}{SGD}{Stochastic Gradient Descent}
+\newacronym{lfe}{LFE}{Local-Feature Extractor}
+\newacronym{csm}{CSM}{Channel-Spatial Modulator}
+\newacronym{app}{APP}{Attentive Patch Pooling}
+\newacronym{atp}{ATP}{Attentive Token Pooling}
+\newacronym{gap}{GAP}{Global Average Pooling}
+\newacronym{anova}{ANOVA}{Analysis of Variance}
+\newacronym{cam}{CAM}{Class Activation Map}
+\newacronym{mtcnn}{MTCNN}{Multi-Task Cascaded Convolutional Networks}
+
+% --- Terms (domain-specific and key concepts) ---
+\newglossaryentry{facial-expression-recognition}{
+  name=facial expression recognition,
+  description={A field within affective computing that seeks to detect human emotions based on facial expressions; FER systems provide automated solutions that analyze facial features to identify the emotion being conveyed, typically through a pipeline of preprocessing, feature extraction, and classification}
+}
+\newglossaryentry{affective-computing}{
+  name=affective computing,
+  description={A field of research concerned with systems that detect, understand, or replicate human emotions; facial expression recognition is one of its application areas}
+}
+\newglossaryentry{lightweight-fer}{
+  name=lightweight FER,
+  description={Facial expression recognition approaches designed for resource-constrained settings (e.g., mobile or edge devices), balancing accuracy with low parameter count and computational cost}
+}
+\newglossaryentry{edge-computing}{
+  name=edge computing,
+  description={Computing performed near the source of data (e.g., on devices or local servers) rather than in a central cloud, often requiring efficient models for real-time or offline use}
+}
+\newglossaryentry{self-attention}{
+  name=self-attention,
+  description={A mechanism that computes a representation of a sequence by relating each position to every other position via query-key-value operations; often refers to scaled dot-product attention as proposed by Vaswani et al., used in Transformers and Vision Transformers}
+}
+\newglossaryentry{multi-head-self-attention}{
+  name=multi-head self-attention,
+  description={An extension of self-attention that linearly projects the query, key, and value vectors once per attention head, computes self-attention for all heads in parallel, and combines the results; proposed by Vaswani et al. to learn information at different representation levels, and used in stacked layers of the Transformer encoder and decoder}
+}
+\newglossaryentry{transformer}{
+  name=Transformer,
+  description={A neural network architecture based on stacked self-attention layers, originally proposed for sequence transduction; uses an encoder-decoder structure, with the encoder used in Vision Transformers for image classification}
+}
+\newglossaryentry{patch-embedding}{
+  name=patch embedding,
+  description={In Vision Transformers, the representation obtained by splitting an image into patches, flattening them, and linearly projecting to a sequence of vectors used as input to the transformer encoder}
+}
+\newglossaryentry{discrete-emotions}{
+  name=discrete emotion model,
+  description={A theory that represents emotions as a fixed set of categories (e.g., the six basic emotions: anger, disgust, fear, happiness, sadness, surprise), often extended with neutral and contempt}
+}
+\newglossaryentry{in-the-wild}{
+  name=in-the-wild (ITW),
+  description={Referring to data or conditions that are not controlled in a laboratory: natural variation in pose, occlusion, illumination, and context; FER ITW denotes facial expression recognition on such unconstrained images or datasets}
+}
+\newglossaryentry{label-distribution-learning}{
+  name=label distribution learning,
+  description={A learning paradigm where the target is a distribution over labels (e.g., description degrees per class) rather than a single label; a lightweight network may learn from soft distributions produced by a stronger model or a label distribution generator}
+}
+\newglossaryentry{emotion-distribution}{
+  name=emotion distribution,
+  description={A vector of description degrees (intensity values per emotion class), one per emotion class, that sum to one; used in emotion distribution learning to represent the intensity of each emotion in a facial expression}
+}
+\newglossaryentry{efficientface}{
+  name=EfficientFace,
+  description={A lightweight facial expression recognition network proposed by Zhao et al., built on ShuffleNet V2 with local-global feature extraction modules and trained via label distribution learning using a label distribution generator}
+}
+\newglossaryentry{label-distribution-generator}{
+  name=label distribution generator,
+  description={A network that produces soft label (emotion) distributions for training images; typically trained first and then used to generate targets for training a lightweight network, and can be discarded at inference}
+}
+\newglossaryentry{local-global-features}{
+  name=local-global feature extraction,
+  description={An architectural strategy that captures both local details (e.g., fine-grained facial regions) and global context (e.g., overall expression)}
+}
+\newglossaryentry{residual-connection}{
+  name=residual connection,
+  description={A skip connection that adds the input of a block to its output, enabling training of very deep networks by easing gradient flow; used e.g. in ResNets}
+}
+\newglossaryentry{knowledge-distillation}{
+  name=knowledge distillation,
+  description={Training a smaller or more efficient model to mimic the outputs of a larger or more accurate model, so that the former learns from the latter's soft predictions}
+}
+\newglossaryentry{retinaface}{
+  name=RetinaFace,
+  description={A face detection and alignment method that preprocesses facial images, ensuring consistent pose and landmark alignment}
+}
+\newglossaryentry{affectnet}{
+  name=AffectNet,
+  description={Large-scale in-the-wild facial expression dataset (approximately 1 million images) with 7 and 8-class subsets, widely used for training and evaluating FER models}
+}
+\newglossaryentry{static-fer}{
+  name=static FER,
+  description={Facial expression recognition on single images using only spatial information, as opposed to dynamic FER which uses video or image sequences}
+}

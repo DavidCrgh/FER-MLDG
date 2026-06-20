@@ -1,0 +1,421 @@
+\chapter{Theoretical Framework}
+\label{chapter:theoretical-framework}
+
+\epigraph{``Another quote goes here''}{\vspace{10pt}Other author}
+
+\newpage
+
+This chapter lays the groundwork for our research by exploring two critical areas: deep learning and facial expression recognition. 
+The concepts discussed here form the foundation of our thesis, providing essential context and understanding for the subsequent chapters. 
+We will discuss deep learning methods for computer vision, and explore the facial expression recognition problem, its challenges, and relevant approaches. 
+This theoretical framework will support our research and guide our approach.
+
+
+%%%% DL  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Deep learning in computer vision} 
+
+Deep learning (DL) has revolutionized the field of computer vision (CV) by allowing automated feature extraction from images with little manual engineering required \cite{lecun2015dl}.
+Following the description by LeCun et al. \cite{lecun2015dl}, DL is a subset of machine learning techniques that use neural networks (NNs) with several hidden layers to model data patterns.
+These multi-layered networks automatically learn representations of input data in increasing levels of abstraction.
+NNs are trained by processing the outputs for a dataset, calculating the error, and using its gradient to adjust the network's weights or parameters
+in a direction that will minimize the error.
+Instead of one big adjustment, many smaller ones are performed iteratively as part of the stochastic gradient descent algorithm.\\
+
+% Deep learning has revolutionized the field of computer vision (CV) by allowing automated feature extraction from images with little manual engineering required.
+% Deep CV techniques, particularly convolutional neural networks, can recognize patterns in images in a hierarchical manner, starting with edges and moving on to complex structures like objects.
+% For classification tasks, these higher abstractions amplify more important aspects for discrimination \cite{lecun2015dl}.
+
+
+\subsection{Convolutional neural networks (CNNs)}
+
+Convolutional neural networks (CNNs) are a frequently used method for computer vision tasks.
+CNNs earn their name from the convolution operation that happens within their layers.
+They are designed to learn representations from multi-dimensional input arrays.
+A relevant example is a color image which can be passed to the network as three 2D arrays, one for each RGB channel \cite{lecun2015dl}.\\
+
+CNN architectures repeatedly stack layers to add more depth to the network, with depth being an important factor in performance gain \cite{he2016resnet}.
+These layers serve as a powerful and automatic feature extraction component.
+For classification tasks, a classifier network is appended to learn how to categorize the high level representations.
+These classifiers usually take the form of fully-connected layer stacks \cite{lecun2015dl}.\\
+
+CNNs can recognize patterns in images in a hierarchical manner, starting with edges and moving on to complex structures like objects.
+For classification tasks, these higher abstractions amplify more important aspects for discrimination \cite{lecun2015dl}.
+Figure \ref{fig:cnn} shows the hierarchy of the features extracted by a CNN from a given RGB input image.
+Each feature map aligned horizontally corresponds to one of many output channels computed from the same input.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/CNN.png}
+    \caption[Hierarchy of CNN feature maps]{Hierarchy of CNN feature maps. Each row denotes the feature maps extracted by the same CNN layer. Note how each map or channel shows different types of features like edges and textures. Image source \cite{lecun2015dl}.}
+    \label{fig:cnn}
+\end{figure}
+
+% The layers in a CNN often consist of three stages: linear activation, non-linear activation, and pooling.
+% The activations in the first stage are computed by performing multiple convolution operations on the input arrays.
+% These operations assume a set of kernels or filters which are the trainable parameters and define the number of output feature maps.
+% After applying a non-linear transformation, the pooling stage uses a statistic like the maximum or average to summarize nearby activations \cite{goodfellow2016dl}.
+% The pooling stage aids in reducing the dimension of the representation, merging similar features, and making the network invariant towards small shifts and distortions \cite{lecun2015dl}.
+% Figure \ref{fig:cnn} shows the hierarchy of the features extracted by a CNN from a given RGB input image.
+
+\subsection{Self-attention}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/selfatt.png}
+    \caption[Diagram of self-attention operations]{Diagram of scaled dot-product attention and multi-head self-attention operations. Image source \cite{vaswani2017selfatt}.}
+    \label{fig:selfatt}
+\end{figure}
+
+In 2017, Vaswani et al. \cite{vaswani2017selfatt} published a seminal paper proposing a particular type of self-attention mechanism for sequence transduction neural networks.
+Self-attention mechanisms seek to find relations between different positions of a sequence to find a representation for it.
+Driven by  existing applications of self-attention for natural language processing (NLP) tasks, \cite{vaswani2017selfatt} proposed \textbf{scaled dot-product attention}.
+From this point forward, we'll refer to this concept as simply self-attention for brevity.\\
+
+Self-attention \cite{vaswani2017selfatt} is a function that maps a query (Q), and a key-value pair (K, V) to an output, with all of these components being vectors.
+This is accomplished by computing a weighted sum of the values, where the weights are given by a compatibility function between queries and keys.
+To allow self-attention to learn information at different representation levels, the authors propose multi-head self-attention (MHSA).
+MHSA linearly projects the query, key, and value vectors $h$ times, one for each attention head, and then computes self-attention for all the heads in parallel.
+Figure \ref{fig:selfatt} shows the standard self-attention and multi-head self-attention operations.
+%These linear projections have trainable parameters that updated by the SGD algorithm.
+
+\subsubsection{Transformers}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{../images/chap2/transformer.png}
+    \caption[Transformer architecture]{Transformer architecture. The encoder (left column) feeds its outputs to the decoder (right column) to generate output probabilities for the given sequence. Image source \cite{vaswani2017selfatt}.}
+    \label{fig:transformer}
+\end{figure}
+
+Vaswani et al. \cite{vaswani2017selfatt} also presented an application of MHSA in the form of the Transformer architecture shown in figure \ref{fig:transformer}
+The Transformer is a network for the sequence transduction task that follows an encoder-decoder structure.
+Both the encoder and decoder employ stacked layers that each apply MHSA to a given input sequence.
+The encoder learns intricate representations of the input sequence, while the decoder takes these representations to generate a corresponding output sequence.
+
+\subsection{Deep computer vision architectures}
+
+We now mention three deep learning architectures in computer vision tasks.
+We include relevant networks that are part of later works focused on FER with deep learning.
+
+\subsubsection{Residual networks (ResNets)}
+
+He et al. \cite{he2016resnet} presented residual networks (ResNets) as a solution to the accuracy degradation problem that occurs when training very deep networks.
+ResNets employ a residual learning approach where the usual stack of CNN layers is enhanced by adding shortcut or skip connections.
+These connections add the unmodified output of a given layer to the output of another one located a few steps ahead.
+Figure \ref{fig:resblock} shows the basic residual learning block that forms a ResNet architecture.\\
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/chap2/resblock.png}
+    \caption[Residual learning block]{Residual learning block. Image source \cite{he2016resnet}.}
+    \label{fig:resblock}
+\end{figure}
+
+The authors experiment with various network depths for the ImageNet \cite{deng2009imagenet} classification problem.
+By convention, a residual network is referred to as `ResNet' followed by the number of layers, e.g. ResNet-50.
+
+\subsubsection{ShuffleNet}
+
+While very deep networks achieve impressive accuracy on classification and other tasks \cite{he2016resnet}, it is unfeasible to employ them in mobile devices or other resource-constrained environments.
+In response to this, certain authors have focused their work on creating lightweight CNN models that reduce the number of parameters and floating point operations per-second (FLOPs) while maintaining performance.\\
+
+One such example is the ShuffleNet family of models, first introduced by Zhang et al. \cite{zhang2018shufflenet} in 2018.
+ShuffleNet uses a specialization of the convolution operation, known as pointwise group convolution, as well as a channel shuffling method to reduce the computational cost and memory usage.\\
+
+Ma et al. \cite{ma2018shufflenetv2} later proposed an optimized version of ShuffleNet known as ShuffleNet V2.
+The authors of ShuffleNet V2 part from the intuition that FLOPs are an indirect metric for comparing efficiency, whereas real world speed is a much more accurate point of comparison.
+Under this assumption, they first devised a set of 4 guidelines for efficient network design.
+These guidelines are based on a careful experimental design using existing lightweight networks and real-world hardware platforms.
+Next, the authors analyzed which guidelines ShuffleNet was breaching, and proposed an optimized version that adhered to them.
+This resulted in a network with a much higher image throughput and slightly better accuracy than its predecessor.
+
+\subsubsection{Vision Transformer (ViT)} 
+
+The Vision Transformer (ViT) by Dosovitskiy et al. \cite{dosovitskiy2020vit} applies the Transformer \cite{vaswani2017selfatt} architecture to the ImageNet \cite{deng2009imagenet} classification problem.
+The authors employ only the encoder portion of the Transformer to generate embeddings for the input image.
+The architecture of the encoder block used in ViT is shown in the rightmost side of figure \ref{fig:vit}.\\
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/vit.png}
+    \caption[Vision Transformer architecture]{Vision Transformer (ViT) and Transformer encoder architecture. MLP denotes a fully-connected network. Image source  \cite{dosovitskiy2020vit}.}
+    \label{fig:vit}
+\end{figure}
+
+In order to feed 2D images to the encoder, the authors split the images into patches of size $16 \times 16$ that are treated as a sequence of visual tokens.
+The patches are flattened into a vector, and linearly projected by a trainable network to obtain a sequence of patch embeddings.
+Next, positional embeddings are added to the patch embeddings to retain positional information.
+The resulting sequence is prepended by a class token that, after being processed by the encoder, will contain a representation of the entire image.
+This special token is fed to a fully-connected classifier head to predict output probabilities.
+Figure \ref{fig:vit} shows the ViT architecture, as well as the previously mentioned processing of inputs.\\
+
+
+A caveat of ViTs is that they may achieve similar or inferior performance when compared to established models like ResNets.
+However, when pretrained with sufficiently large datasets, they can outperform such methods.
+Another advantage is that the self-attention operation leads the model to pay attention to image regions that are more relevant for classification, e.g. tune out the background \cite{dosovitskiy2020vit}.\\
+
+In the remaining pages of this chapter, we will discuss the facial expression recognition problem with a focus on the deep learning methods we previously discussed.
+
+%%%% FER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Facial expression recognition (FER)}
+
+Facial expression recognition (FER) is a field within affective computing that seeks to detect human emotions based on expressions \cite{karnati2023survey}.
+Facial expression is a non-verbal form of communication that can relay a wide variety of psychological information in a rapid manner \cite{sajjad2023survey}.
+Additionally, facial expression information can be captured in a non-invasive way by visual methods \cite{umer2022augment}.
+As such, FER has many applications within medicine, driver safety, and human-computer interaction \cite{li2022survey}.\\
+
+Early FER researchers applied classical image processing approaches such as hand-crafted features coupled with support vector machines or dynamic Bayesian networks for suitable classification performance \cite{canal2022survey}.
+However, with the advancements in neural network research, processing power, and data gathering capabilities, deep learning-based approaches have become the norm in FER \cite{li2022survey, karnati2023survey, canal2022survey}.\\
+
+Recent secondary studies have identified the general deep FER system pipeline to employ three main steps: (i) facial image preprocessing, (ii) feature extraction, and (iii) classification \cite{li2022survey, karnati2023survey}. 
+Preprocessing usually involves the following methods: illumination normalization, data augmentation, face detection and alignment, and frame normalization for video-based FER \cite{karnati2023survey}.
+Currently, researchers have developed deep learning approaches for all three stages.
+However, step (i) is usually applied independently by using methods such as \cite{mtcnn2016} and \cite{retinaface2020} for face detection and alignment prior to training the feature extractor and classifier end to end.
+Such an approach can be seen in recent works such as \cite{eff-face2021, apvit2023, xue2021transfer, ma2023asf}.
+In this research proposal, we shall focus on the latter two steps exclusively.\\
+
+The following sections characterize our particular area of research within FER.
+
+\subsection{Theories for emotional labeling} 
+
+As part of a survey on deep learning techniques for FER, Karnati et al. \cite{karnati2023survey} identified two main theories for representing emotional states: dimensional and discrete.
+In the dimensional theory, an emotion is placed in the continuous, 2D valence-arousal space.
+Figure \ref{fig:dimensional} shows the labeling employed under this model.\\
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{../images/chap2/dimensional.png}
+    \caption[Dimensional model for emotional labeling]{Dimensional model for emotional labeling. Image source \cite{karnati2023survey}.}
+    \label{fig:dimensional}
+\end{figure}
+
+The discrete theory is based on Ekman and Friesen's \cite{ekman1971} universal emotions model, which defines six basic categories of expression: anger, disgust, fear, happiness, sadness, and surprise.
+While it is argued that this model is prevalent across cultures, later research seems to suggest the contrary \cite{li2022survey}.
+Regardless, the discrete theory remains the dominant model for FER research \cite{karnati2023survey}.
+The discrete theory is also often extended by adding the neutral and contempt categories such as in \cite{affnet2019}.
+This research proposal focuses on the discrete theory for emotional labeling.
+
+\subsection{Static FER}
+
+Authors such as Li et al. \cite{li2022survey} and Karnati et al. \cite{karnati2023survey} categorize FER approaches by the type of input given to the feature extractor.
+Our proposal is intended to be a part of static FER research, which accepts single facial images as input and extracts features from spatial information exclusively.
+On the other hand, dynamic FER adds a temporal component by accepting image sequences or videos as input.\\
+
+A large amount of research has focused on static FER due to availability of data and ease of processing \cite{li2022survey}.
+Additionally, dynamic FER databases can be used for static research by simply extracting single frames from the sample videos.
+
+%\subsection{Preprocessing for FER}
+
+
+\subsection{FER in-the-wild (ITW)}
+
+Another important change in FER research over the years is the shift from laboratory-controlled conditions to in-the-wild (ITW) datasets.
+This shift has occurred in parallel with the transition from classical machine learning methods to deep learning approaches \cite{li2022survey, karnati2023survey}.
+While DL methods achieve excellent accuracy in lab-controlled data, their performance for FER ITW is far inferior \cite{ma2023asf, zhao2021manet}.
+Despite this, FER systems trained in lab conditions are less suitable for real-world use thanks to a lessened generalization capability \cite{li2022idfl}.
+This proposal focuses on FER ITW as part of its research problem.\\
+
+In ITW databases, factors such as motion blur, face deformation, head pose, facial occlusion, and illumination can vary significantly.
+Such uncontrolled conditions can lead to a vastly degraded performance of FER systems \cite{ma2023asf}.
+Figure \ref{fig:itw} shows a comparison between lab-controlled and ITW samples.\\
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/ITW comparison.png}
+    \caption[Comparison of lab-controlled and in-the-wild database samples]{Comparison of lab-controlled (CK+ \cite{lucey2010ckplus}) and ITW (AffectNet \cite{affnet2019}) database samples for the six basic emotion classes.}
+    \label{fig:itw}
+\end{figure}
+
+Lab datasets typically contain significantly fewer images when compared to their ITW counterparts \cite{ma2023asf}. 
+For instance, CK+ is a lab-controlled dataset frequently used for benchmarking FER systems \cite{karnati2023survey}. 
+CK+ \cite{lucey2010ckplus} comprises 593 facial expression sequence samples, with only 327 labeled with a discrete emotion class. 
+In contrast, the ITW dataset, AffectNet \cite{affnet2019}, includes approximately 1 million facial images, with 450 thousand manually labeled with a discrete class.
+
+\subsection{Challenges in FER}
+
+The transition to ITW datasets for FER has been beneficial for robust training, but it has also introduced several challenges in system design. 
+According to a recent survey \cite{karnati2023survey}, pose and occlusion are two primary barriers to the adaptability of such systems. 
+Said survey \cite{karnati2023survey} also mentions annotator subjectiveness, or label noise, as a factor that leads to incorrectly labeled images.
+Additionally, FER ITW datasets exhibit high variation within classes due to differences in age, gender, and ethnicity, as well as high similarity across classes, such as fear and surprise \cite{li2022survey, farzaneh2021loss, fard2022adcorre}.
+
+\subsection{Label distribution learning (LDL)}
+
+Label distribution learning (LDL) was originally introduced by Xin Geng \cite{geng2016ldl} as a general learning paradigm for machine learning.
+LDL was later adapted to the FER problem by Zhou et al. \cite{zhou2015edl} in the form of emotion distribution learning (EDL).\\
+
+The authors of EDL depart from the intuition that facial expressions are often the result of a mixture of basic emotions, instead of a particular one.
+EDL is proposed as an alternative to single-label learning (SLL) and multi-label learning (MLL) that can capture the intensity of each emotion in a facial expression.
+The intensity is given by a description degree $d_x^y$, where $x$ is a sample in the dataset and $y$ is a particular emotion class.
+The degrees associated with a sample $x$ are arranged in an emotion distribution $E_x = \{ d_x^{y_1}, d_x^{y_2}, \ldots, d_x^{y_c} \}$, where $c$ is the number of classes.
+The degrees are normalized such that $d_x^y \in [0,1]$, and the sum of all degrees for a sample is equal to one.
+%This information is encoded in a distribution across emotion classes $E_x = \{ d_x^{y_1}, d_x^{y_2}, \ldots, d_x^{y_c} \}$, where $x$ is a sample in the dataset, $y$ denotes an emotion class, and $c$ is the number of emotion classes in the dataset.
+Under EDL, the error of a FER model can be computed by any function that measures the distance between two distributions.\\
+
+% As such, single-label learning (SLL) methods are often insufficient for real world FER applications.
+% A possible alternative is a multi-label learning (MLL) paradigm, however, another issue comes into play.
+% While MLL can capture the presence of two or more emotions from a single expression, the distinction between their intensities is lost.
+% EDL is proposed as an alternative to SLL and MLL that can capture all the intensities of each basic emotion category for a given image by encoding them in a distribution across emotion classes.
+% Under EDL, the error for a classifier can be computed by any function that measures the distance between two distributions.\\
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/edl.png}
+    \caption[Emotion distribution of a facial image]{Emotion distribution of a facial image as well as class scores and multi-labels. Image source \cite{zhou2015edl}.}
+    \label{fig:edl}
+\end{figure}
+
+Figure \ref{fig:edl} shows the three types of labels for a facial expression image.
+Here, a SLL approach will classify the expression as anger based on the highest score and a MLL approach will detect anger and disgust.
+Similarly to MLL, EDL indicates the presence of anger and disgust. 
+However, the description degrees also tell us that anger has a higher intensity than disgust and is potentially more relevant.
+
+%%%% Deep FER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Deep FER architectures}
+
+The following sections describe two architectures for static FER ITW that are central to our proposal.
+
+\subsection{EfficientFace}\label{section:efficientface}
+
+As a solution to resource-intensive architectures, Zhao et al. \cite{eff-face2021} proposed the EfficientFace (EF) architecture for lightweight FER.
+In order to adapt the ShuffleNet V2 \cite{ma2018shufflenetv2} architecture towards FER, the authors adopt two main perspectives: improved feature extraction, and label distribution learning.
+Figure \ref{fig:efface} shows the architecture of the EF network.\\
+
+The improved feature extraction comes in the form of two specialized modules that are adapted into ShuffleNet V2 \cite{ma2018shufflenetv2}.
+The first module is the local-feature extractor (LFE), which learns local features at the low feature level.
+The LFE accepts the output features from the first convolutional layer of ShuffleNet V2 and splits them spatially into four equal patches.
+These patches correspond to the facial units related to expression.
+Each patch is processed in parallel by two stacks of convolutional layers and then concatenated to obtain a set of \textbf{local feature maps}.
+In order to maintain computational efficiency, the LFE employs depthwise convolutions.\\
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/efface.png}
+    \caption[EfficientFace and label distribution generator architecture.]{EfficientFace and label distribution generator (LDG) architecture. DWConv denotes depthwise convolution,  GAP denotes global average pooling, and FC denotes a fully-connected layer. Image source \cite{eff-face2021}.}
+    \label{fig:efface}
+\end{figure}
+
+The next specialized module is the channel-spatial modulator (CSM).
+The CSM is introduced after stage 2 to essentially create an attention map of features at a global level.
+To accomplish this, the CSM employs two parallel branches to compute two sets of heatmaps from spatial and channel information.
+The computed channel and spatial heatmaps are fused together, and then multiplied with the CSM input features to apply the attention maps.
+This last step yields what is known as the \textbf{modulated global feature maps}.\\
+
+The next step is to take the local and global feature maps and add them with a residual connection as seen in figure \ref{fig:efface}.
+The remaining portion of EF takes the resulting local-global features and processes them using the rest of the ShuffleNet V2 layers without further modification.
+The final output layer is a softmax function which computes an emotion distribution for the given sample.\\
+
+The authors conducted an ablation study to test the effectiveness of the proposed modules.
+On both evaluation datasets, their results show that each module improves the network's accuracy individually.
+Furthermore, the combination of both modules (as seen in figure \ref{fig:efface}) provides the highest increase in accuracy.
+
+\subsubsection{Label distribution generator (LDG)}
+
+The label distribution generator (LDG) is the component used to implement the second perspective: label distribution learning (LDL).
+The LDG is a standard ResNet-50 \cite{he2016resnet} network pretrained on a large dataset of celebrity facial images \cite{guo2016msceleb}, and fine-tuned for the FER task.
+The network is trained using the typical single-label learning method (SLL), with a final softmax function for computing the output emotion distribution.
+The LDG architecture is presented in the bottom part of figure \ref{fig:efface} \\
+
+Once the LDG is trained, it is set to inference mode and used to guide the training of EfficientFace (EF) using LDL.
+During training, both networks generate their respective emotion distributions.
+Next, a cross-entropy function is used to measure the distance between distributions, using the LDG's output as ground-truth.\\
+
+Once training is finished, the LDG can be discarded to yield a very light network with competitive FER performance.
+One important result of the authors' study is that EF trained with LDL obtains a better accuracy than the standalone LDG, despite being a much smaller network.
+
+
+\subsection{APViT}\label{section:apvit}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../images/chap2/apvit.png}
+    \caption[APViT architecture]{APViT architecture. The dashed rectangle presents an alternative view for the processing of inputs. APP denotes attentive patch pooling, ATP denotes attentive token pooling, MLP denotes a fully-connected network, \textit{M} denotes the number of stacked ATP blocks, and \textit{r} denotes a configurable keep rate for tokens. Image source \cite{apvit2023}.}
+    \label{fig:apvit}
+\end{figure}
+
+The self-attention mechanism in Vision Transformers (ViTs) can reduce the impact of noise like pose and occlusion variations.
+However, many unimportant features are still processed. 
+To address this, Xue et al. \cite{apvit2023} proposed the APViT model for FER ITW.
+They introduced two attentive pooling modules to discard irrelevant information and reduce FLOPs.
+Figure \ref{fig:apvit} shows the architecture of the network.\\
+
+APViT uses a ResNet-50 variant, IR-50 \cite{deng2019ir50}, as a backbone to extract low-level feature maps from an input image, 
+The maps are split into patches, and infused with positional embeddings.
+Each patch's attention score is calculated and arranged in a grid. 
+The first module, attentive patch pooling (APP), selects the top-k relevant patches based on the attention grid, discarding the rest. 
+These patches are flattened into tokens and fed to the ViT portion of the network. 
+The second module, attentive token pooling (ATP), is appended to each Transformer encoder layer, forming ATP blocks. 
+ATP retains only the top-k important tokens using self-attention scores, thus reducing the number of tokens the encoder outputs.\\
+
+APViT's pooling modules reduce FLOPs by 17\% compared to the baseline.
+They also improve performance over its predecessor, TransFER \cite{xue2021transfer}, with accuracy gains of 1.07\% and 0.68\% on the RAF-DB \cite{rafdb2019} and AffectNet \cite{affnet2019} datasets, respectively. 
+However, APViT retains the same 65.2 million parameter count as TransFER, making it a resource-intensive model \cite{lengwe2023pattlite}.
+
+% Although the self-attention mechanism in ViTs can mitigate the impact of noise, i.e. pose and occlusion problems, valuable resources are still spent processing such unimportant features.
+% As a direct solution to this, Xue et al. \cite{apvit2023} proposed the APViT model for FER ITW.
+% To reduce the processing of noise, the authors introduce two attentive pooling modules to discard irrelevant information and reduce FLOPs.
+% Figure \ref{fig:apvit} shows the architecture of the network.\\
+
+% APViT initially takes an input image and uses a ResNet-50 variant, IR-50 \cite{deng2019ir50}, to extract the low level feature maps.
+% In keeping with the ViT procedure, the maps are split into patches and infused with positional embeddings.
+% Parallel to this, each patch has its attention score calculated and arranged in a grid.\\
+
+% The first module, attentive patch pooling (APP), will use the attention grid to select the top-k most relevant patches and drop the rest.
+% The remaining patches are flattened into tokens and fed to the ViT portion of the network.
+% The second module, attentive token pooling (ATP), now comes into play.
+% Each Transformer encoder layer has been appended with an ATP module, with the resulting layer being termed an ATP block.
+% Similar to APP, ATP uses the self-attention scores to retain only the top-k most important tokens.
+% In doing this, the encoder will output a reduced number of tokens that represent the most important information \cite{apvit2023}.\\
+
+% APViT's \cite{apvit2023} pooling modules achieve a 17\% reduction in FLOPs over the baseline.
+% Additionally, the network obtains some performance improvements when compared to its predecessor, TransFER \cite{xue2021transfer}.
+% In their experimental evaluation, APViT gained 1.07\% and 0.68\% accuracy over TransFER in the RAF-DB \cite{rafdb2019}, and AffectNet \cite{affnet2019} datasets respectively.
+% Despite these optimizations, APViT retains the 65.2 million parameter count of TransFER, making it a resource intensive model \cite{lengwe2023pattlite}.
+  
+\section{Related Work}
+
+The following section describes various deep learning-based approaches for static FER.
+Given the nature of our proposal, we focus on lightweight models and those that implement self-attention mechanisms such as vision transformers.
+%We also briefly mention other approaches encountered during the literary review process.
+
+\subsection{Lightweight FER models}
+
+Earlier lightweight FER studies tended to adapt existing CNN modules or architectures towards the FER problem.
+Hewitt and Gunes \cite{hewitt2018} performed a comparative study between FER architectures for mobile environments focusing on small model sizes.
+The study proposed and compared three network variants based on popular CNN architectures: AlexNet, VGGNet, and MobileNet. 
+Mitre-Hernández and Ferro-Perez \cite{mitre2020} proposed ResMoNet, which stacks different optimized CNN blocks for lightweight FER.
+Their approach achieves a smaller size and lower FLOPs than MobileNet, with a lower memory utilization than other comparable networks.
+FaceChannel, proposed by Barros et al. \cite{barros2020fc}, is a FER model that predicts emotions based on the dimensional, valence-arousal model instead of the categorical one.
+It is a small network based on VGG16 that trims down the number of layers to obtain a significantly smaller number of parameters.\\
+
+More recent studies have combined the current versions of lightweight models such as ShuffleNet and MobileNet with custom modules to achieve outstanding performance.
+EfficientFace by Zhao et al. \cite{eff-face2021} integrates specialized modules for local-global feature extraction into the lightweight ShuffleNet-V2 architecture.
+Additionally, the authors adopt a label distribution learning approach where they train EfficientFace to learn the outputs of a FER-trained ResNet-50 instead of the usual dataset labels.
+Wu et al. \cite{wu2020edge} also propose a lightweight FER network based on ShuffleNet-V2 intended for a cloud-edge device model.
+Their approach proposes a system that runs the lighter network components on edge devices.
+However, as an optional step, the intermediate feature maps are sent to a more powerful cloud device that computes channel-spatial attention maps with custom pooling modules.
+PAtt-Lite by Le Ngwe et al. \cite{lengwe2023pattlite} instead uses a truncated MobileNetV1 as its backbone.
+This truncated network is followed by a patch extraction block that splits the feature maps into four patches for local feature extraction.
+Finally, the patch feature maps are fed to a special module that uses self-attention for classification.
+
+\subsection{Self-attention in FER}
+
+To the best of our knowledge, Xue et al. \cite{xue2021transfer} were the first group of authors to apply Vision Transformers (ViTs) to the FER problem.
+They propose the TransFER model, which applies a specialized type of dropout at different stages to help the model learn more diverse representations.
+The attention dropping modules are applied at the convolutional and ViT encoder stages to randomly drop feature maps or self-attention heads respectively.
+Huang et al. \cite{huang2021} presented a network that uses an attention mechanism at both the low and high levels of feature learning.
+At the low level, a grid-wise attention mechanism is used to learn long-range biases between different facial features.
+At the high level, the feature maps are transformed into visual tokens and fed to a ViT encoder that learns global representations of expressions.
+Ma et al. \cite{ma2023asf} instead propose feeding richer feature maps to the ViT encoder network by diversifying the network inputs.
+Specifically, they extract the local binary pattern (LBP) from the input image and extract features from both the RGB and LBP data using two parallel ResNet-18 networks.
+These separate maps are fused together by a special module that also extracts local and global features and then feeds them to the ViT encoder.
+Iterating on the TransFER model \cite{apvit2023}, Xue et al. propose the APViT network.
+They employ two attention pooling mechanisms to drop feature map patches and visual tokens based on their attention scores, discarding the less important regions.
+In doing this, they manage to significantly lower the model's FLOPs while improving accuracy by avoiding noisy features.\\
+
+A smaller number of authors have also applied the self-attention mechanism for FER without using a ViT encoder component.
+Pecoraro et al. \cite{pecoraro2022lhc} propose a special module that applies multi-headed self-attention to the output feature maps of convolutional layers.
+This module is intended to be compatible with existing networks so that it only has to be inserted between the CNN layers without requiring further modification.
+The attention classifier in PAtt-Lite \cite{lengwe2023pattlite} also employs dot product self-attention on the last fully-connected layers of the network.
+The ablation study shows that this attention classifier obtains significant performance improvements when applied.

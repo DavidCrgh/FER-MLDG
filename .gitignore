@@ -1,0 +1,16 @@
+*:Zone.Identifier
+**/__pycache__
+**/out
+**/.vscode
+src/preproc/data/Nano AffectNet
+src/preproc/data/Nano AffectNet/*
+*.pth
+*.zip*
+*.tar*
+**/.idea
+src/networks/LDG/data
+src/networks/LDG/log
+src/networks/LDG/wandb
+src/visualization/data/*
+src/visualization/output/*
+src/visualization/out_cam_grid

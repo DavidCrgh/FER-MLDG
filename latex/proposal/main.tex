@@ -1,0 +1,108 @@
+%%%%% Start preamble %%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}   %Allows double spacing with the \doublespacing command
+\usepackage{glossaries}
+\makeglossaries
+
+\usepackage{amssymb}
+
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+
+\usepackage[english]{babel}
+
+% URLs and within-document links support
+\usepackage{hyperref}
+
+% For inserting images
+\usepackage{graphicx}
+
+% For embedding source code
+% \usepackage{listings}
+% \lstset{
+%     language=C, % Language can be customized
+%     basicstyle=\footnotesize,
+%     numbers=left,
+%     stepnumber=1,
+%     showstringspaces=false,
+%     tabsize=1,
+%     breaklines=true,
+%     breakatwhitespace=false,
+% }
+
+
+% Packages for prettier tables
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% Custom command to add space between table rows
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+
+% Disable word splitting at the end of lines (hyphenation)
+% Requires using '\emergencystretch 3em' after the \begin{document}
+% command to fix words going over margin
+\usepackage[none]{hyphenat}
+
+
+% Package for creating Gantt charts using tikz
+\usepackage{pgfgantt}
+\usetikzlibrary{backgrounds}
+
+% Always indent the first line after a section heading
+\usepackage{indentfirst}
+
+% Configure opening sections and indices
+\input{title/config}
+
+\addto\captionsenglish{
+\renewcommand{\listfigurename}{List of figures}
+}
+
+\addto\captionsenglish{
+\renewcommand{\listtablename}{List of tables}
+}
+
+\usepackage{subfiles} % Best loaded last in the preamble
+%%%%% End preamble   %%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Start document %%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\emergencystretch 3em % Fixes words over margin when disabling hyphenation
+
+
+% Inserta la portada del documento
+\input{title/title}
+\newpage
+
+\doublespacing
+
+\input{abstract/abstract}
+\newpage
+
+\tableofcontents
+
+\listoffigures
+\listoftables
+\clearpage
+
+\subfile{chapters/c1-intro}
+
+\subfile{chapters/c2-framework}
+
+\subfile{chapters/c3-proposal}
+
+\subfile{chapters/c4-aims}
+
+\subfile{chapters/c5-method}
+
+\printglossary
+
+
+% Use IEEE style bibliography
+\bibliographystyle{ieeetr}
+\bibliography{referencias}
+
+\end{document}
+%%%%% End document %%%%%%%%%%%%%%%%%%%%%

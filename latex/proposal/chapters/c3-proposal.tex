@@ -1,0 +1,131 @@
+\documentclass[../main.tex]{subfiles}
+\graphicspath{{\subfix{../images/}}}
+\begin{document}
+
+\chapter{Proposal}
+
+This chapter introduces our proposed approach to the lightweight FER problem, as informed by our literature review process. 
+We outline the research problem, progressing from general FER methods to more optimized, lightweight solutions. 
+A comprehensive description of our proposed architecture and training procedure is provided. 
+Additionally, we review related approaches in lightweight FER and FER with self-attention mechanisms. 
+Lastly, we justify the necessity for such a research project based on current evidence.
+\newpage
+
+\section{Problem definition}
+
+Facial expression recognition (FER) systems provide automated solutions that analyze facial features to identify the emotion being conveyed. 
+In the context of static or image-based FER, feature-extracting CNNs followed by fully-connected  classifiers have been the generally predominant approach \cite{canal2022survey}.
+Following the wider trend in deep computer vision, networks with self-attention mechanisms have been applied to the FER task to obtain significant classification improvements \cite{lengwe2023pattlite, apvit2023, xue2021transfer, ma2023asf, huang2021, pecoraro2022lhc}.
+In particular, Vision Transformers are quite adept at the FER task when training with ITW conditions.
+This is, in part, thanks to the network's ability to pay greater attention to more important facial regions, which mitigates the effect of occlusion and pose variations \cite{karnati2023survey}.\\
+
+While several of these approaches have achieved state-of-the-art results, many of them incur a heavy resource cost in terms of network parameters and floating point operations per-second (FLOPs).
+When considering that the feature extraction step is the system's bottleneck \cite{karnati2023survey}, these solutions can become unsuitable for resource-constrained environments.
+Some FER researchers have developed lightweight approaches that aim to maintain a comparable level of performance while greatly reducing parameters and computational cost \cite{eff-face2021, lengwe2023pattlite, hewitt2018, mitre2020, barros2020fc}.
+These proposals generally employ well-studied, lightweight CNN architectures and combine them with custom modules or training strategies to maintain robustness for FER ITW.
+Such methods have achieved great results, with some even setting the current state-of-the-art \cite{lengwe2023pattlite}.
+However, this is still only a small subset of FER research, and only an even smaller subset has been tested on ITW databases \cite{eff-face2021}.\\
+
+One such lightweight FER network is EfficientFace \cite{eff-face2021}.
+This network achieves great accuracy results on the RAF-DB (88.36\%) and AffectNet (63.7\%) datasets when taking into account its very low parameter count of 1.28 million.
+However, other Transformer models like APViT \cite{apvit2023} are capable of achieving much better results (RAF-DB 91.98\%, AffectNet 66.91\%), albeit with a significant increase in performance cost (65.2 M parameters).
+
+% Typically studied under Ekman and Friesen's \cite{ekman1971} basic emotions model, expressions can be mapped to 6 basic emotions: anger, disgust, fear, happiness, sadness, and surprise.
+% Current research also adds neutral and sometimes a contempt category \cite{karnati2023survey}.
+% Under this paradigm, automated FER can be taken as a multi-class image classification task.\\
+
+% Early researchers applied classical image processing approaches such as hand-crafted features coupled with support vector machines or dynamic Bayesian networks for suitable classification performance \cite{canal2022survey}.
+% However, with the advancements in neural network research, processing power, and data gathering capabilities, deep learning-based approaches have become the norm in FER \cite{karnati2023survey, canal2022survey, li2022survey}.\\
+
+% The other important change in FER research over the years is the shift from lab-controlled data to in-the-wild (ITW) datasets.
+% While early FER datasets were small in both sample and subject size, newer ITW sets provide thousands of images to train and evaluate with \cite{li2022survey}.
+% The current biggest dataset, AffectNet \cite{affnet2019}, contains more than 1 million facial images.
+% Although this orders of magnitude increase in the available data is great for robust training, ITW datasets are far more challenging, even for current deep learning methods.
+% Whereas head pose, occlusion by hair or accessories, and illumination were strictly controlled in lab datasets, ITW databases impose no such restrictions.
+% This leads to vastly degraded performance of FER systems when tested with ITW conditions \cite{zhao2021manet, ma2023asf}.\\
+
+\section{Proposal} \label{c3:proposal}
+
+In order to address the previously stated problem, we intend to improve EfficientFace's (EF) \cite{eff-face2021} FER accuracy by enhancing its label distribution learning (LDL) component.
+To accomplish this, we will modify the label distribution generator (LDG) in three significant ways that leverage different aspects of both EF and APViT \cite{apvit2023}.\\
+
+First, we will replace the LDG's ResNet-50 backbone with IR-50 \cite{deng2019ir50} and load APViT's backbone weights onto the first three stages.
+This will enable us to transfer knowledge from a network that has already been pretrained on the FER task.
+Second, we will adapt EF's local-feature extractor and channel-spatial modulator modules into the LDG.
+With this, the network should have better awareness of the global and local facial features related to expression.
+Third, we will train the modified LDG using Zhao et al.'s \cite{eff-face2021} LDL approach, where APViT will act as the distribution generator.
+With the evidence \cite{eff-face2021} in favor of LDL training, we expect that applying this method will improve the network's FER accuracy.
+After modifying and training the LDG, the final step will be to re-train EF with the authors' original training approach, but using the modified LDG instead of the base LDG.\\
+
+The rationale for this proposal is given by two main intuitions.
+First, we essentially apply \cite{eff-face2021}'s proposal at a larger scale by using the modified LDG and APViT as the trained and generator networks respectively.
+Doing this should yield a LDG model that achieves an improved accuracy over its original counterpart.
+Furthermore, an improved LDG should also improve EF's accuracy given the effectiveness of the LDL method.
+Secondly, we argue that the modified LDG will serve as an intermediary that can transfer knowledge smoothly between two networks of vastly different sizes.
+In doing this, we are exploiting APViT's superior FER performance and domain knowledge to improve EF's accuracy while keeping its low resource usage.
+It is in this same vein that we refrain from modifying the EF network directly, and instead modify the portion (LDG) that is only used in training and not during inference.\\
+
+\section{Related work}
+
+The following section describes various deep learning-based approaches for static FER.
+Given the nature of our proposal, we focus on lightweight models and those that implement self-attention mechanisms such as vision transformers.
+%We also briefly mention other approaches encountered during the literary review process.
+
+\subsection{Lightweight FER models}
+
+Earlier lightweight FER studies tended to adapt existing CNN modules or architectures towards the FER problem.
+Hewitt and Gunes \cite{hewitt2018} performed a comparative study between FER architectures for mobile environments focusing on small model sizes.
+The study proposed and compared three network variants based on popular CNN architectures: AlexNet, VGGNet, and MobileNet. 
+Mitre-Hernández and Ferro-Perez \cite{mitre2020} proposed ResMoNet, which stacks different optimized CNN blocks for lightweight FER.
+Their approach achieves a smaller size and lower FLOPs than MobileNet, with a lower memory utilization than other comparable networks.
+FaceChannel, proposed by Barros et al. \cite{barros2020fc}, is a FER model that predicts emotions based on the dimensional, valence-arousal model instead of the categorical one.
+It is a small network based on VGG16 that trims down the number of layers to obtain a significantly smaller number of parameters.\\
+
+More recent studies have combined the current versions of lightweight models such as ShuffleNet and MobileNet with custom modules to achieve outstanding performance.
+Zhao et al.'s \cite{eff-face2021} EfficientFace integrates specialized modules for local-global feature extraction into the lightweight ShuffleNet-V2 architecture.
+Additionally, they adopt a label distribution learning approach where they train EfficientFace to learn the outputs of a FER-trained ResNet-50 instead of the usual dataset labels.
+Wu et al. \cite{wu2020edge} also propose a lightweight FER network based on ShuffleNet-V2 intended for a cloud-edge device model.
+Their approach proposes a system that runs the lighter network components on edge devices.
+However, as an optional step, the intermediate feature maps are sent to a more powerful cloud device that computes channel-spatial attention maps with custom pooling modules.
+PAtt-Lite by Le Ngwe et al. \cite{lengwe2023pattlite} instead uses a truncated MobileNetV1 as its backbone.
+This truncated network is followed by a patch extraction block that splits the feature maps into four patches for local feature extraction.
+Finally, the patch feature maps are fed to a special module that uses self-attention for classification.
+
+\subsection{Self-attention in FER}
+
+To the best of our knowledge, Xue et al. \cite{xue2021transfer} were the first group of authors to apply Vision Transformers (ViTs) to the FER problem.
+They propose the TransFER model, which applies a specialized type of dropout at different stages to help the model learn more diverse representations.
+The attention dropping modules are applied at the convolutional and ViT encoder stages to randomly drop feature maps or self-attention heads respectively.
+Huang et al. \cite{huang2021} presented a network that uses an attention mechanism at both the low and high levels of feature learning.
+At the low level, a grid-wise attention mechanism is used to learn long-range biases between different facial features.
+At the high level, the feature maps are transformed into visual tokens and fed to a ViT encoder that learns global representations of expressions.
+Ma et al. \cite{ma2023asf} instead propose feeding richer feature maps to the ViT encoder network by diversifying the network inputs.
+Specifically, they extract the local binary pattern (LBP) from the input image and extract features from both the RGB and LBP data using two parallel ResNet-18 networks.
+These separate maps are fused together by a special module that also extracts local and global features and then feeds them to the ViT encoder.
+Iterating on the TransFER model \cite{apvit2023}, Xue et al. propose the APViT network.
+They employ two attention pooling mechanisms to drop feature map patches and visual tokens based on their attention scores, discarding the less important regions.
+In doing this, they manage to significantly lower the model's FLOPs while improving accuracy by avoiding noisy features.\\
+
+A smaller number of authors have also applied the self-attention mechanism for FER without using a ViT encoder component.
+Pecoraro et al. \cite{pecoraro2022lhc} propose a special module that applies multi-headed self-attention to the output feature maps of convolutional layers.
+This module is intended to be compatible with existing networks so that it only has to be inserted between the CNN layers without requiring further modification.
+The attention classifier in PAtt-Lite \cite{lengwe2023pattlite} also employs dot product self-attention on the last fully-connected layers of the network.
+The ablation study shows that this attention classifier obtains significant performance improvements when applied.
+
+%\subsection{Other approaches}
+
+\section{Justification}
+
+FER is a field of research with many potential applications for a variety of sectors.
+Current research has studied the effectiveness of FER in areas such as healthcare \cite{muhammad2017health}, autonomous vehicles \cite{zaman2022car}, industrial Internet-of-Things \cite{xi2021iot}, education \cite{savchenko2022edu}, and human-robot interaction \cite{wu2021hri}.
+Thus, new developments in FER may bring with them important benefits to such related applications. 
+Prior state-of-the-art networks such as RAN \cite{wang2020ran}, published in 2020, have been surpassed by current works like APViT \cite{apvit2023} and POSTER \cite{zheng2023poster} by a good margin, which suggests an accelerated rate of improvement.\\
+
+While deep learning architectures have achieved impressive results not only in FER, but also in general computer vision tasks, the resource cost incurred by these state-of-the-art models poses a significant barrier for real world use.
+For example, top performing models such as APViT \cite{apvit2023}, POSTER \cite{zheng2023poster}, and POSTER++ \cite{mao2023posterv2} have a number of parameters in the range from 43.7 million to 71.8 million \cite{lengwe2023pattlite}.
+Such requirements limit what can be done with FER systems intended to run in resource-constrained environments such as mobile or IoT edge devices.
+As such, there is a real need for further research into lightweight FER.
+Unfortunately, the community involved in this endeavor remains small with only a few authors across several years focusing on optimized FER \cite{eff-face2021}.
+
+
+\end{document}

@@ -1,0 +1,61 @@
+\chapter{Introduction}
+\label{chapter:introduction}
+
+
+\epigraph{``This can be used as an introductory quote''}{Quote author}
+
+\newpage
+
+Facial expression recognition (FER) plays a crucial role within human-computer interaction (HCI), enabling automated detection of human emotions from facial data \cite{li2022survey}.
+FER has also attracted researchers in the field of affective computing, due to its potential applications in creating systems that detect, understand, and replicate emotions \cite{karnati2023survey}.
+Thanks to advancements in computer vision and deep learning (DL) methods, FER technology has improved significantly over the recent years \cite{li2022survey}.
+This thesis focuses on the subfield of lightweight FER for deployment on resource-constrained environments, which demands a balance between accuracy and efficiency.\\
+
+FER systems have a wide range of applications, including sociable robots, medical treatment, driver safety, marketing, education, psychological research, and security \cite{li2022survey, karnati2023survey, canal2022survey, sajjad2023survey}.
+Despite this, FER faces several challenges such as occlusion, pose and lighting conditions, subject variability, data annotation, resolution, among others \cite{li2022survey, sajjad2023survey}.
+On top of this, real-world usage scenarios such as edge computing require the highest level of efficiency in order to be feasible \cite{wu2020edge}.\\
+
+Given the proliferation of mobile and edge platforms with a limited resource budget, there is an increasing need for lightweight FER models.
+Recent studies have focused on creating optimized deep learning methods for computer vision \cite{howard2017mobilenet, zhang2018shufflenet}, with some even applying such methods directly to FER \cite{eff-face2021, lengwe2023pattlite}.
+These studies have shown that it is possible to significantly optimize these models while maintaining or even improving the system's accuracy.\\
+
+This thesis aims to enhance the lightweight FER network, EfficientFace \cite{eff-face2021}, in order to improve its accuracy while maintaining its low resource cost.
+To this end, we modify the authors' training approach by leveraging the APViT \cite{apvit2023} model, which achieves state-of-the-art results in FER.
+
+\newpage
+
+\section{Problem}
+
+Facial expression recognition (FER) systems provide automated solutions that analyze facial features to identify the emotion being conveyed. 
+In the context of static or image-based FER, feature-extracting CNNs followed by fully-connected  classifiers have been the generally predominant approach \cite{canal2022survey}.
+Following the wider trend in deep computer vision, networks with self-attention mechanisms have been applied to the FER task to obtain significant classification improvements \cite{apvit2023, lengwe2023pattlite, xue2021transfer, ma2023asf, huang2021, pecoraro2022lhc}.
+In particular, Vision Transformers are quite adept at the FER task when training with challenging pose, lighting and occlusion conditions (in-the-wild).
+This is, in part, thanks to the network's ability to pay greater attention to more important facial regions, which mitigates the effect of occlusion and pose variations \cite{karnati2023survey}.\\
+
+While several of these approaches have achieved state-of-the-art results, many of them incur a heavy resource cost in terms of network parameters and floating point operations per-second (FLOPs).
+When considering that the feature extraction step is the system's bottleneck \cite{karnati2023survey}, these solutions can become unsuitable for resource-constrained environments.
+Some FER researchers have developed lightweight approaches that aim to maintain a comparable level of performance while greatly reducing parameters and computational cost \cite{eff-face2021, lengwe2023pattlite, hewitt2018, mitre2020, barros2020fc}.
+These proposals generally employ well-studied, lightweight CNN architectures and combine them with custom modules or training strategies to maintain robustness for FER ITW.
+Such methods have achieved great results, with some even setting the current state-of-the-art \cite{lengwe2023pattlite}.
+However, this is still only a small subset of FER research, and only an even smaller subset has been tested on ITW databases \cite{eff-face2021}.\\
+
+One such lightweight FER network is EfficientFace \cite{eff-face2021}.
+This network achieves great accuracy results on the RAF-DB (88.36\%) and AffectNet (63.7\%) datasets when taking into account its very low parameter count of 1.28 million.
+However, other Transformer models like APViT \cite{apvit2023} are capable of achieving much better results (RAF-DB 91.98\%, AffectNet 66.91\%), albeit with a significant increase in computational cost (65.2 M parameters).
+
+\section{Document Structure}
+\textbf{TO-DO al finalizar el documento}
+
+%Provide a brief explanation of the intent of this document, as well as what has been described in the current section. Then describe what is included in each one of the sections. An example is provided but should be changed by the author.
+
+%\nameref{chapter:theoretical-framework} chapter brings the theoretical concepts needed for understanding the research developed in this thesis, as well as the related work describing the state of the art of the specific topic that the author worked on.
+%The sections mentioned here are incomplete and should be completed with the specific chapters of the author.
+%\nameref{chapter:hypothesis-objectives} describes the hypothesis defined for the research as well as a description of the objectives and its deliverables. Also, the scope and limitations of this research effort can be found in that chapter.
+
+%\nameref{chapter:methodology} chapter describes the experiment executed for this thesis, including the experiment design, the hardware used, and the analysis method for the data obtained.
+
+%The \nameref{chapter:design} chapter presents the selected state of the implementation of what the author developed in its document. Also, the design and implementation details of the developed work are presented in this chapter. 
+
+%\nameref{chapter:results} displays the results of the data obtained through the experiment and, the  \nameref{chapter:discussion} chapter analyses all the information obtained in \nameref{chapter:results}.
+
+%Finally, \nameref{chapter:conclusions-fw} shows all the obtained conclusions and remarks from the research presented in this document. Future work is identified in this chapter.
