@@ -134,9 +134,11 @@ linkcolor=darkgray,filecolor=darkgray,urlcolor=darkgray,citecolor=darkgray]{hype
 
 % Define abstract environment since it doesn't exists on book class
 \newenvironment{abstract}%
-{\cleardoublepage\null \vfill \begin{center}%
-\bfseries \abstractname \end{center}}
-{\vfill\null}
+{\cleardoublepage\thispagestyle{plain}%
+ \vspace*{\baselineskip}%
+ \begin{center}\bfseries\abstractname\end{center}%
+ \vspace{\baselineskip}\nobreak}%
+{}
 
 % Generation of nomenclature
 \usepackage{nomencl}
@@ -146,7 +148,7 @@ linkcolor=darkgray,filecolor=darkgray,urlcolor=darkgray,citecolor=darkgray]{hype
 \usepackage[footnote,withpage,printonlyused]{acronym}
 
 % Glossary (terms and acronyms); load after acronym so \newacronym feeds the glossary
-\usepackage[acronym,toc]{glossaries}
+\usepackage[acronym,toc,nonumberlist]{glossaries}
 \makeglossaries
 
 % For color definitions

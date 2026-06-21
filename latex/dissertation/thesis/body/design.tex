@@ -1,5 +1,5 @@
 \chapter{Design}
-\epigraph{``Another quote.''}{\vspace{10pt}Another Author}
+\epigraph{``The details are not the details. They make the design.''}{\vspace{10pt}Charles Eames}
 \label{chapter:design}
 \newpage
 
@@ -11,25 +11,35 @@ This section describes the two main deep learning architectures that form the fo
 
 \subsection{APViT: Attention Pooling Vision Transformer}
 
-APViT, proposed by Xue et al. \cite{apvit2023}, is a Vision Transformer architecture specifically designed for facial expression recognition. Building upon their earlier TransFER model \cite{xue2021transfer}, APViT introduces two key attention pooling mechanisms that significantly improve both accuracy and computational efficiency.
+APViT, proposed by Xue et al. \cite{apvit2023}, is a Vision Transformer architecture specifically designed for facial expression recognition. Building upon their earlier TransFER model \cite{xue2021transfer}, APViT introduces two key attention pooling mechanisms that significantly improve both accuracy and computational efficiency.\\
 
-The network employs attention pooling at two stages: first, at the feature map level to discard less informative spatial patches, and second, at the visual token level to filter out noisy representations before the final classification stage. This dual pooling strategy allows APViT to focus computational resources on the most expressive facial regions while avoiding features that may introduce noise or ambiguity.
+The network employs attention pooling at two stages: first, at the feature map level to discard less informative spatial patches, and second, at the visual token level to filter out noisy representations before the final classification stage. This dual pooling strategy allows APViT to focus computational resources on the most expressive facial regions while avoiding features that may introduce noise or ambiguity.\\
 
 APViT achieves state-of-the-art performance on major FER benchmarks, reporting 91.98\% accuracy on RAF-DB and 66.91\% on AffectNet \cite{apvit2023}. However, this performance comes at the cost of a relatively large model size of approximately 65.2 million parameters, making it unsuitable for deployment in mobile or edge computing scenarios.
 
 \subsection{EfficientFace}
 
-EfficientFace, proposed by Zhao et al. \cite{eff-face2021}, addresses the need for accurate yet lightweight facial expression recognition models. The architecture builds upon the efficient ShuffleNet V2 backbone and integrates specialized local-global feature extraction modules designed specifically for capturing both fine-grained facial details and holistic expression patterns.
+EfficientFace, proposed by Zhao et al. \cite{eff-face2021}, addresses the need for accurate yet lightweight facial expression recognition models. The architecture builds upon the efficient ShuffleNet V2 backbone and integrates specialized local-global feature extraction modules designed specifically for capturing both fine-grained facial details and holistic expression patterns.\\
 
-The key innovation of EfficientFace lies not only in its architecture but also in its training methodology. Rather than training directly on dataset labels, EfficientFace employs a label distribution learning approach (LDL). In this framework, a label distribution generator (LDG), first generates soft probability distributions over expression classes for each training image. EfficientFace is then trained to approximate these distributions rather than the original hard labels. This emotion distribution learning process enables the lightweight network to learn more nuanced decision boundaries and achieve higher accuracy despite its compact size.
+The key innovation of EfficientFace lies not only in its architecture but also in its training methodology. Rather than training directly on dataset labels, EfficientFace employs a label distribution learning approach (LDL). In this framework, a label distribution generator (LDG), first generates soft probability distributions over expression classes for each training image. EfficientFace is then trained to approximate these distributions rather than the original hard labels. This emotion distribution learning process enables the lightweight network to learn more nuanced decision boundaries and achieve higher accuracy despite its compact size.\\
 
 One of EfficientFace's primary contributions is the balance between accuracy and efficiency, achieving competitive performance on FER benchmarks while maintaining a model size of only 1.28 million parameters \cite{eff-face2021}. This makes it particularly suitable for real-world applications where computational resources are limited.
 
 \section{Dataset}
 
-We employ the AffectNet dataset by Mollahosseini et al. \cite{affnet2019} as the dataset for the execution of our experimental design. Since EfficientFace \cite{eff-face2021} and APViT \cite{apvit2023} both test on  AffectNet, we opted to use this database as a fair point of comparison. Additionally, the dataset counts with both 7 and 8 emotion class subsets. The 7 class subset can be taken as an easier problem than the 8 class one, with EfficientFace achieving an accuracy of 63.7\% and 59.89\% respectively. This results in a better distinction of the levels for this factor.\\
+We employ the AffectNet dataset by Mollahosseini et al. \cite{affnet2019} as the dataset for the execution of our experimental design. Since EfficientFace \cite{eff-face2021} and APViT \cite{apvit2023} both test on AffectNet, we opted to use this database as a fair point of comparison. Additionally, the dataset includes both 7 and 8 emotion class subsets. The 7 class subset can be taken as an easier problem than the 8 class one, with EfficientFace achieving an accuracy of 63.7\% and 59.89\% respectively. This results in a better distinction of the levels for this factor.\\
 
-AffectNet is one of the largest FER datasets currently available, containing approximately 1 million images. This set was gathered automatically by querying search engines with emotion related keywords. The images are annotated under the categorical model with 11 emotion classes, as well as with valence-arousal values Out of the total set of images, only 291,651 images are actually labeled with an emotion class. We have elected to follow the same procedure as \cite{eff-face2021, apvit2023} for preprocessing, training, and evaluating of AffectNet. The classes for the 7 emotion subset correspond to neutral, happiness, sadness, surprise, fear, disgust, and anger, with the 8 class subset adding the contempt category.
+AffectNet is one of the largest FER datasets currently available, containing approximately 1 million images. This set was gathered automatically by querying search engines with emotion related keywords. The images are annotated under the categorical model with 11 emotion classes, as well as with valence-arousal values. Out of the total set of images, only 291,651 images are actually labeled with an emotion class. We have elected to follow the same procedure as \cite{eff-face2021, apvit2023} for preprocessing, training, and evaluating of AffectNet. The classes for the 7 emotion subset correspond to neutral, happiness, sadness, surprise, fear, disgust, and anger, with the 8 class subset adding the contempt category.
+
+\section{Loss function for label distribution learning}
+
+In all training procedures we employ the same loss function as described in the original EfficientFace paper \cite{eff-face2021}, which is the cross-entropy loss between the predicted distribution and the ground-truth distribution. This function is defined as:\\
+
+\begin{equation}
+	\mathcal{L} = -\frac{1}{N \times c} \sum_{i=0}^{N-1} \sum_{j=0}^{c-1} d_j^i \log(\widetilde{d}_j^i)
+\end{equation}
+
+where $N$ is the number of samples, $c$ is the number of classes, $\widetilde{\boldsymbol{d}} = (\widetilde{d}_1, \widetilde{d}_2, ..., \widetilde{d}_{c-1})$ is the predicted label distribution of EfficientFace and $\sum_{j=0}^{c-1} \widetilde{d}_j = 1$; the superscript $i$ and subscript $j$ denote sample and expression category respectively.
 
 \section{Proposed algorithm}
 
@@ -60,9 +70,11 @@ The modified LDG is based on the same ResNet-50 architecture that serves as the 
 
 \subsubsection{Training EfficientFace with the Modified LDG}
 
-Once the modified LDG is trained, it serves as the label distribution generator for training EfficientFace. The training procedure follows the original label distribution learning approach \cite{eff-face2021}, but with the modified LDG replacing the original ResNet-50 LDG.
+Once the modified LDG is trained, it serves as the label distribution generator for training EfficientFace. The training procedure follows the original label distribution learning approach \cite{eff-face2021}, but with the modified LDG replacing the original ResNet-50 LDG.\\
 
-During EfficientFace training, the modified LDG remains frozen and is used to generate soft label distributions for each training image. EfficientFace is then trained to minimize the loss between its predicted distributions and these soft labels. This two-stage knowledge transfer process, first from APViT to the modified LDG, then from the modified LDG to EfficientFace, should enable the lightweight model to benefit from APViT's superior representational capacity without the computational burden of using APViT directly during training. The design for this stage is depicted in figure \ref{fig:phase2-diagram}.
+During EfficientFace training, the modified LDG remains frozen and is used to generate soft label distributions for each training image. EfficientFace is then trained to minimize the loss between its predicted distributions and these soft labels. This two-stage knowledge transfer process, first from APViT to the modified LDG, then from the modified LDG to EfficientFace, should enable the lightweight model to benefit from APViT's superior representational capacity without the computational burden of using APViT directly during training. The design for this stage is depicted in figure \ref{fig:phase2-diagram}.\\
+
+We employ a slightly tweaked version of the EfficientFace source code that fixes some minor bugs and limitations of the original implementation. The modified codebase is publicly available at \url{https://github.com/DavidCrgh/EfficientFace}.
 
 
 \begin{figure}
@@ -74,7 +86,7 @@ During EfficientFace training, the modified LDG remains frozen and is used to ge
 \end{figure}
 
 \subsection{Dataset preprocessing}
-Dataset preprocessing involves standardizing and transforming the facial images to create model-ready inputs. For each image, the pipeline first detects and aligns faces using RetinaFace \cite{retinaface2020} to account for pose variation and ensure facial landmarks are centered and consistently oriented. Images are then resized and padded to a fixed size of 112 x 112 pixels. These transformations ensure that all images fed to the models are properly aligned, uniformly sized, and consistently formatted, which is critical for robust model training. These steps are carried out once outside the training pipeline.
+Dataset preprocessing involves standardizing and transforming the facial images to create model-ready inputs. For each image, the pipeline first detects and aligns faces using RetinaFace \cite{retinaface2020} to account for pose variation and ensure facial landmarks are centered and consistently oriented. Images are then resized and padded to a fixed size of 112 x 112 pixels. These transformations ensure that all images fed to the models are properly aligned, uniformly sized, and consistently formatted, which is critical for robust model training. These steps are carried out once outside the training pipeline.\\
 
 Additional preprocessing steps are applied at training and validation time. These steps follow the exact same procedure as the original EfficientFace architecture. For training, images are first randomly resized and cropped to the target size, followed by random horizontal flipping for data augmentation. Each image is then normalized using mean and standard deviation values matching the ImageNet dataset (mean=[0.485, 0.456, 0.406]; std=[0.229, 0.224, 0.225]). For validation and testing, images are simply resized to the target size, and normalized in the same way, but no random augmentation is applied.
 
@@ -87,11 +99,11 @@ Both phases of the experimental design follow the same general procedure. First,
 
 \subsection{Training APViT on AffectNet}\label{section:design-apvit-training}
 
-As noted in the Requirements section, pretrained APViT weights for AffectNet were not publicly available at the time of this work. The network was therefore trained from scratch following the procedure described in the original APViT paper \cite{apvit2023}.
+As noted in the Requirements section, pretrained APViT weights for AffectNet were not publicly available at the time of this work. The network was therefore trained from scratch following the procedure described in the original APViT paper \cite{apvit2023}.\\
 
-The public APViT codebase is oriented toward training on the RAF-DB dataset, so modifications were necessary to support training on AffectNet. These adaptations include changes to the data loading pipeline, class configuration, and evaluation scripts. The modified codebase is publicly available at \url{https://github.com/DavidCrgh/APViT}.
+The public APViT codebase is oriented toward training on the RAF-DB dataset, so modifications were necessary to support training on AffectNet. These adaptations include changes to the data loading pipeline, class configuration, and evaluation scripts. The modified codebase is publicly available at \url{https://github.com/DavidCrgh/APViT}.\\
 
-Table~\ref{tab:design-apvit-hyperparams} lists the key training hyperparameters used for this run. These values were taken directly from the configuration file provided in the original repository and kept unchanged.
+Table~\ref{tab:design-apvit-hyperparams} lists the key training hyperparameters used for this run. These values were taken directly from the configuration file provided in the original repository and kept unchanged.\\
 
 \begin{table}[h]
     \centering
@@ -130,13 +142,13 @@ Refer to section \ref{section:scope-limitations} for the limitations of this res
 
 \subsubsection{Requirements}
 
-\textbf{Pretrained models:} \label{section:design-pretrained-models} The proposed approach requires access to model weights for the APViT network pretrained of the AffectNet dataset. To the best of our knowledge, these weights are not publicly available. As such, we retrained the network from scratch using the same procedure as described in the original APViT paper \cite{apvit2023}.
+\textbf{Pretrained models:} \label{section:design-pretrained-models} The proposed approach requires access to model weights for the APViT network pretrained on the AffectNet dataset. To the best of our knowledge, these weights are not publicly available. As such, we retrained the network from scratch using the same procedure as described in the original APViT paper \cite{apvit2023}.
 
-\textbf{Computational resources:} The main computational resource required for executing the proposed approach is the available GPU memory. Phase 1 of the design requires more memory since it leverages the two heaviest networks: APViT and the modified LDG. In executions of phase 1, we noticed a memory requirement of aproximately 16GB of VRAM per training run.
+\textbf{Computational resources:} The main computational resource required for executing the proposed approach is the available GPU memory. Phase I of the design requires more memory since it leverages the two heaviest networks: APViT and the modified LDG. In executions of Phase I, we noticed a memory requirement of approximately 16GB of VRAM per training run.
 
 \textbf{Dataset access:} The execution of the proposed approach requires access to the 7-class and 8-class subsets of the AffectNet dataset \cite{affnet2019}.
 
-\textbf{Software environment:} Execution of the training scripts requires a environment with the following software:
+\textbf{Software environment:} Execution of the training scripts requires an environment with the following software:
 \begin{itemize}
     \item Python 3.10
     \item PyTorch 1.11 and CUDA 11.8
@@ -150,6 +162,4 @@ Refer to section \ref{section:scope-limitations} for the limitations of this res
 
 \subsection{Implementation}\label{section:implementation}
 
-The main code repository is hosted on GitHub and can be accessed at the following URL: \url{https://github.com/to-do-add-repo-link}. The main branch holds the training scripts for both phases of the proposed approach. The \texttt{networks} directory contains the implementations of the APViT, LDG, and EfficientFace architectures. Dataset preprocessing code, including face alignment with RetinaFace and conversion to the formats required by each network, is located in the \texttt{preproc} directory.
-
-Experiment execution is organized through Jupyter notebooks. Phase I experiments are run from notebooks in \texttt{notebooks/phase1}, with each notebook corresponding to one combination of the ablation factors (pretrained weights, local-global modules, transformer guidance, and dataset variant). Phase II notebooks in \texttt{notebooks/phase2} automate the training of EfficientFace with different label generators. The notebooks handle environment setup, configuration loading, and invocation of the underlying training scripts. Notebooks are also provided for executing the hyperparameter optimization process using WandB Sweeps.
+The main code repository is hosted on GitHub and can be accessed at the following URL: \url{https://github.com/DavidCrgh/FER-MLDG}. The \texttt{src/networks} directory contains the implementations of the APViT, LDG, and EfficientFace architectures. Dataset preprocessing code, including face alignment with RetinaFace and conversion to the formats required by each network, is located in the \texttt{src/preproc} directory. Experiment execution is organized through Jupyter notebooks. The notebooks handle environment setup, configuration loading, and invocation of the underlying training scripts. Notebooks are also provided for executing the hyperparameter optimization process using WandB Sweeps.

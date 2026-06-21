@@ -1,31 +1,30 @@
 \chapter{Hypothesis and Objectives}
 \label{chapter:hypothesis-objectives}
-\epigraph{``Another quote.''.}{\vspace{10pt}Another Author}
+\epigraph{``The first principle is that you must not fool yourself --- and you are the easiest person to fool.''}{\vspace{10pt}Richard P. Feynman}
 
 \newpage
 
 
 \section{Hypothesis}
 \label{section:hypothesis}
-Based on the literature review and objectives of this research project, we present the following hypothesis:\\
+Based on the literature review and objectives of this research project, we present the following hypothesis:
 
 \textit{``Training EfficientFace with a label distribution generator enhanced with one or more of: FER pretrained backbone weights, local-global feature extraction modules, and/or vision transformer guidance, should increase its facial expression recognition accuracy on the AffectNet dataset when compared to the original baseline''.}
 
 \section{Objectives}
 \label{section:objectives}
-This section defines the main and specific objectives of our research proposal.
+This section defines the main and specific objectives of our research proposal.\\
 These objectives align with the complete execution of our proposed study.
 
 \subsection{Main Objective}
 \label{section:main-objective}
-\label{objective:main}
-Based on our proposal to address the previously presented problem, we determine the main objective of our research project to be as follows: \\
+Based on our proposal to address the previously presented problem, we determine the main objective of our research project to be as follows:
 
 \textit{Study the facial expression recognition accuracy obtained when training EfficientFace \cite{eff-face2021} with a label distribution generator enhanced with local-global feature extraction modules and knowledge from a vision transformer model \cite{apvit2023}. }
 
 \subsection{Specific Objectives}
 \label{section:specific-objectives}
-In order to successfully complete our general objective, we derive the following specific objectives:\\
+In order to successfully complete our general objective, we derive the following specific objectives:
 
 \begin{enumerate}
     \item Enhance the label distribution generator (LDG) by loading the pretrained weights from APViT's backbone, adding local-global feature extraction modules from EfficientFace, and training the LDG to imitate APViT's outputs using label distribution learning.
@@ -47,17 +46,17 @@ This section defines the deliverables aligned with each of the specific objectiv
 
 \textbf{Specific Objective 2:}
 \begin{itemize}
-    \item Jupyter notebooks that automate the phase 1 experiment execution.
-    \item Raw data results from the phase 1 experimental design execution.
-    \item Raw data results from the phase 1 hyperparameter optimization procedure.
+    \item Jupyter notebooks that automate the Phase I experiment execution.
+    \item Raw data results from the Phase I experimental design execution.
+    \item Raw data results from the Phase I hyperparameter optimization procedure.
     \item Trained weights of the resulting models.
 \end{itemize}
 
 \textbf{Specific Objective 3:}
 \begin{itemize}
-    \item Jupyter notebooks that automate the phase 2 experiment execution.
-    \item Raw data results from the phase 2 experimental design execution.
-    \item Raw data results from the phase 2 hyperparameter optimization procedure.
+    \item Jupyter notebooks that automate the Phase II experiment execution.
+    \item Raw data results from the Phase II experimental design execution.
+    \item Raw data results from the Phase II hyperparameter optimization procedure.
     \item Trained weights of the resulting models.
 \end{itemize}
 
@@ -73,11 +72,7 @@ The following section outlines the scope and limitations of this research projec
 
 \item The preprocessing steps for the input images was carried out as outlined by the authors of EfficientFace and APViT in their respective papers \cite{eff-face2021, apvit2023}.
 
-\item Only the face alignment methods described in the base papers \cite{eff-face2021, apvit2023} were used, i.e., MTCNN \cite{mtcnn2016} or RetinaFace \cite{retinaface2020}.
-
 \item The materials used in this research are limited to publicly available resources. This includes datasets, research papers, source code, programming languages,  packages, and other language extensions.
-
-%\item The state-of-the-art review that backs this research covers the period from January, 2021 to  March, 2024. This range is not strict, and other publications may be included depending on their relevance.
 
 \item Only deep learning methods for facial expression recognition were considered for the state-of-the-art comparison.
 

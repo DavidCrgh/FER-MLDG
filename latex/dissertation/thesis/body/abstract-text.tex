@@ -1,6 +1,12 @@
 \iftoggle{paper}
 {
-The body of the abstract goes here.
- 
+Lightweight facial expression recognition (FER) models are essential for resource-constrained deployment, yet they typically lag behind heavier transformer-based approaches in accuracy.
+This thesis investigates whether enhancing the label distribution generator (LDG) used to train EfficientFace, a 1.28-million-parameter lightweight FER network, can close that accuracy gap without increasing the deployed model's cost.
+Three LDG enhancements are evaluated: FER-pretrained APViT backbone weights, EfficientFace local-global feature modules, and label distribution learning guided by APViT outputs.
+The study follows a two-phase factorial design on the AffectNet dataset (7- and 8-class subsets).
+
+Phase I ablates the three enhancements on the modified LDG (M-LDG). APViT transformer guidance proved the only statistically significant factor, lifting M-LDG accuracy by 7.889 percentage points to 64.34\% on AffectNet-7 and 57.71\% on AffectNet-8. FER-pretrained weights and local-global modules contributed negligibly, due to mismatch with the M-LDG's deeper ResNet-50 backbone. Phase II trains two EfficientFace variants, one guided by the best M-LDG and one directly by APViT, and compares them against the published EfficientFace baseline.
+
+The main hypothesis is rejected: neither variant surpassed the published baseline of 63.70\% on AffectNet-7 and 59.89\% on AffectNet-8. The best result, M-LDG-guided EfficientFace, reached 63.00\% and 55.99\% on the two subsets. A capacity bottleneck is identified: a parameter ratio of approximately 44:1 between M-LDG and EfficientFace is too wide for label distribution learning to bridge, unlike the modest gap in the original EfficientFace paper. Replacing the M-LDG with APViT as the direct teacher produced no statistically significant difference in student accuracy, suggesting that at this capacity scale the choice of teacher is secondary to the structural gap. Future work should address the bottleneck directly, for example through intermediate-capacity assistant networks or distribution sharpening techniques.
 }%
 

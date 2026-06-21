@@ -4,13 +4,22 @@
 
 \newpage
 
-\section{Source Code}
+This section lists the public repositories and experiment-tracking resources used to implement and execute the experimental design.\\
 
+\section{Source Code}
 \label{deliverable:source-code}
 
-%\subsection{General details}
-Pointer or description of the source code can be given in this section..
+\textbf{Main code repository:} The primary repository for this thesis contains the modified LDG and EfficientFace implementations, dataset preprocessing scripts, and Jupyter notebooks for experiment execution and hyperparameter optimization. It is available at \url{https://github.com/DavidCrgh/FER-MLDG}.\\
+
+\textbf{Modified APViT codebase:} Adaptations to the public APViT \cite{apvit2023} implementation for training on AffectNet are available at \url{https://github.com/DavidCrgh/APViT}.\\
+
+\textbf{Modified EfficientFace codebase:} A tweaked version of the EfficientFace \cite{eff-face2021} source code that fixes minor bugs and limitations of the original implementation is available at \url{https://github.com/DavidCrgh/EfficientFace}.\\
+
+\section{Dataset}
+\label{deliverable:dataset}
+
+The AffectNet dataset \cite{affnet2019} used in this thesis can be requested from \url{https://mohammadmahoor.com/pages/databases/affectnet/}.
 
 \section{Gathered Data from the Experiments}
 
-If required, raw data could be presented in this section.
+Training metrics, validation curves, confusion matrices, network weights, and hyperparameter sweep results were logged with WandB. The project is available at \url{https://wandb.ai/dval/FER-Thesis-mLDG-Training}.

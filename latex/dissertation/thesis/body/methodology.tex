@@ -1,13 +1,13 @@
 \chapter{Methodology}
 \label{chapter:methodology}
-\epigraph{``Another quote.''}{\vspace{10pt}Another Author }
+\epigraph{``If you cannot measure it, you cannot improve it.''}{\vspace{10pt}Lord Kelvin }
 
 \newpage
 
-In this chapter we describe the key aspects of the methodology used to test our hypothesis and proposal.
+In this chapter we describe the key aspects of the methodology used to test our hypothesis and proposal.\\
 We go over the two phase design of the study, along with their factors, levels, responses, inputs, statistical analysis and more.
 
-\section{Experiment design}
+\section{Experimental design}
 \label{section:experiment-design}
 The experimental design of this study is divided into two distinct phases to ensure a rigorous and replicable process. This division allows for a more thorough evaluation of the proposed modifications and a reduction in overall training time. The design for each of the phases follows the guidelines defined by Montgomery \cite{montgomery2017design}.
 
@@ -34,45 +34,45 @@ The design factors for this phase are the guidance network (modified LDG or APVi
 The measures and treatment combinations for each phase are described below.
 
 \subsection{Phase I: LDG ablation study}
-A $2^k$ factorial design with $k=4$ is used to explore the effects of each LDG modification and their interactions, with both AffectNet subsets. This results in 8 treatment combinations per subset, for a total of 16 experimental runs. The treatment combinations are shown in Table~\ref{tab:p1-runs}.
+A $2^k$ factorial design with $k=4$ is used to explore the effects of each LDG modification and their interactions, with both AffectNet subsets. This results in 8 treatment combinations per subset, for a total of 16 experimental runs. The treatment combinations are shown in Table~\ref{tab:p1-runs}.\\
 For reference, the factors are pretrained weights (A), GL feature extraction modules (B), APViT guidance (C), and dataset (D).
 
 \input{../tables/p1-runs}
 
 \subsection{Phase II: EfficientFace training study}
-A $2^k$ factorial design with $k=2$ is used, resulting in 4 treatment combinations executed in randomized order. Additional runs may be added based on hyperparameter variation. The treatment combinations are shown in Table~\ref{tab:p2-runs}.
+A $2^k$ factorial design with $k=2$ is used, resulting in 4 treatment combinations executed in randomized order. Additional runs may be added based on hyperparameter variation. The treatment combinations are shown in Table~\ref{tab:p2-runs}.\\
 The factors in this phase are labeled: guidance network (G), and dataset (D).
 
 \input{../tables/p2-runs}
 
 \section{Response variable}
-For both phases of this study, the top-1 accuracy metric obtained on the evaluation or test set after executing the full training procedure is taken as the sole response variable. This aligns with common practice in FER studies, where accuracy is the main metric for comparison with other approaches \cite{li2022survey, karnati2023survey, canal2022survey}.
-Top-1 accuracy measures the fraction of samples where the model's most confident prediction exactly matches the true label:
+For both phases of this study, the top-1 accuracy metric obtained on the evaluation or test set after executing the full training procedure is taken as the sole response variable. This aligns with common practice in FER studies, where accuracy is the main metric for comparison with other approaches \cite{li2022survey, karnati2023survey, canal2022survey}.\\
+Top-1 accuracy measures the fraction of samples where the model's most confident prediction exactly matches the true label:\\
 \begin{equation}
-    \text{Top-1 Accuracy} = \frac{1}{N} \sum_{i=1}^{N} \left[ y_i = \hat{y}_i \right]
+    \text{Top-1 Accuracy} = \frac{1}{N} \sum_{i=1}^{N} \left[ y_i = \hat{y}_i \right]\\
 \end{equation}
 where $N$ is the total number of samples, $y_i$ is the true label, and $\hat{y}_i$ is the predicted label with the highest probability.
 
 \section{Experiment set up and data collection}
-The execution of the experiments in both phases is facilitated by Jupyter notebooks that automate set up and parameterization.
-For each phase there are $n=2^k$ notebooks, each with the correct treatment combinations according to tables \ref{tab:p1-runs} and \ref{tab:p2-runs}.
-The notebook uses the levels to download the correct dataset, pretrained weights, and training script.
-The script is then executed using the levels corresponding to the actual combination.
+The execution of the experiments in both phases is facilitated by Jupyter notebooks that automate set up and parameterization.\\
+For each phase there are $n=2^k$ notebooks, each with the correct treatment combinations according to tables \ref{tab:p1-runs} and \ref{tab:p2-runs}.\\
+The notebook uses the levels to download the correct dataset, pretrained weights, and training script.\\
+The script is then executed using the levels corresponding to the actual combination.\\
 
-The randomization of runs and execution of the actual notebook is manually performed in the execution environment.
-Multiple VastAI instances with a single Nvidia RTX 3090 GPU were used as the execution environment, isolating each run in its own instance.
-The data collection is also automated via Wandb integration in the training scripts.
+The randomization of runs and execution of the actual notebook is manually performed in the execution environment.\\
+Multiple VastAI instances with a single Nvidia RTX 3090 GPU were used as the execution environment, isolating each run in its own instance.\\
+The data collection is also automated via Wandb integration in the training scripts.\\
 All experimental runs are logged to this service, registering accuracy, loss, confusion matrices, and hyperparameters, among other data.
 
 \section{Description of the inputs of the system}
 The main inputs to the system are the AffectNet dataset and the network weights for APViT and EfficientFace. All images are preprocessed using RetinaFace \cite{retinaface2020} for face alignment and maintaining the pipeline used in the original scripts of APViT \cite{apvit2023} and EfficientFace \cite{eff-face2021}.
 
 \section{Statistical tool}
-To analyze the results of both experimental phases, we use analysis of variance (ANOVA) to determine if there are statistically significant differences between the treatment combinations. The procedure is as follows:
+To analyze the results of both experimental phases, we use analysis of variance (ANOVA) to determine if there are statistically significant differences between the treatment combinations. The procedure is as follows:\\
 
-First, we check the assumptions required for ANOVA, such as normality of residuals and homogeneity of variance, using diagnostic plots and statistical tests. If the assumptions are not met, appropriate data transformations or non-parametric alternatives are considered.
+First, we check the assumptions required for ANOVA, such as normality of residuals and homogeneity of variance, using diagnostic plots and statistical tests. If the assumptions are not met, appropriate data transformations or non-parametric alternatives are considered.\\
 
-For phase 1, after estimating the effects of each factor, negligible factors are discarded to focus the analysis on the most relevant variables. This also has the advantage of effectively adding replications to the remaining factor combinations, improving the reliability of the results. In phase 2, all factors are retained since multiple replications are available for each combination.
+For Phase I, after estimating the effects of each factor, negligible factors are discarded to focus the analysis on the most relevant variables. This also has the advantage of effectively adding replications to the remaining factor combinations, improving the reliability of the results. In Phase II, all factors are retained since multiple replications are available for each combination.\\
 
 Descriptive statistics and visualizations, such as boxplots and line plots, are used to summarize the results and explore trends. Finally, a two-way ANOVA is performed to assess the main effects and interactions between the key factors, helping to identify which modifications lead to significant improvements in accuracy.
 
@@ -80,4 +80,4 @@ Descriptive statistics and visualizations, such as boxplots and line plots, are 
 
 \textbf{Null hypothesis:} There is no statistically significant difference in the mean accuracy between the different treatment combinations; any observed differences are due to random variation.
 
-\textbf{Alternate hypothesis:} At least one treatment combination leads to a statistically significant difference in mean accuracy compared to the others, indicating that the modifications or factors have a real effect on performance.
+\textbf{Alternative hypothesis:} At least one treatment combination leads to a statistically significant difference in mean accuracy compared to the others, indicating that the modifications or factors have a real effect on performance.

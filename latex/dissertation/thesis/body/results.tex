@@ -1,9 +1,9 @@
 \chapter{Results}
-\epigraph{``Another quote.''}{\vspace{10pt}Another author}
+\epigraph{``The purpose of computing is insight, not numbers.''}{\vspace{10pt}Richard Hamming}
 \label{chapter:results}
 \newpage
 
-This chapter reports the findings of the two experimental phases described in chapters \nameref{chapter:methodology} and \nameref{chapter:design}. The response variable for both phases is top-1 validation accuracy on the AffectNet dataset \cite{affnet2019}. We present factorial results, main effect estimates, learning curve observations, hyperparameter optimization outcomes, and statistical test results in the order they were produced. Interpretation and analysis of these findings are deferred to the \nameref{chapter:discussion} chapter.\\
+This chapter reports the findings of the two experimental phases described in chapters \nameref{chapter:methodology} and \nameref{chapter:design}. The response variable for both phases is top-1 validation accuracy on the AffectNet dataset \cite{affnet2019}. We present factorial results, main effect estimates, learning curve observations, hyperparameter optimization outcomes, and statistical test results in the order they were produced. Interpretation and analysis of these findings are deferred to the \nameref{chapter:discussion} chapter.
 
 \section{Phase I: label distribution generator ablation}
 \label{section:results-phase1}
@@ -44,7 +44,7 @@ The Phase I full $2^4$ factorial design yielded 16 experimental runs covering al
     \label{tab:results-p1-ranked}
 \end{table}
 
-The 16 runs span a range from 63.31\% to 48.71\%, with a mean of 56.13\% and an overall standard deviation of 5.05\%. The eight runs with APViT guidance enabled (C+) occupy ranks 1 through 8 and cluster between 56.76\% and 63.31\%, while the eight runs without guidance (C-) occupy ranks 9 through 16 and cluster between 48.71\% and 55.51\%. The highest accuracy (63.31\%) was achieved by treatment 12 (C+, A-, B-, AffectNet-7) and the lowest (48.71\%) by treatment 15 (C-, A-, B-, AffectNet-8). Within each C level, runs trained on AffectNet-7 consistently outperformed their AffectNet-8 counterparts by approximately 6 percentage points, confirming the dominant roles of factors C and D before formal effect estimation.\\
+The 16 runs span a range from 63.31\% to 48.71\%, with a mean of 56.13\% and an overall standard deviation of 5.05\%. The eight runs with APViT guidance enabled (C+) occupy ranks 1 through 8 and cluster between 56.76\% and 63.31\%, while the eight runs without guidance (C-) occupy ranks 9 through 16 and cluster between 48.71\% and 55.51\%. The highest accuracy (63.31\%) was achieved by treatment 12 (C+, A-, B-, AffectNet-7) and the lowest (48.71\%) by treatment 15 (C-, A-, B-, AffectNet-8). Within each C level, runs trained on AffectNet-7 consistently outperformed their AffectNet-8 counterparts by approximately 6 percentage points, confirming the dominant roles of factors C and D before formal effect estimation.
 
 \subsection{Main effects and interactions}
 \label{section:results-phase1-effects}
@@ -83,7 +83,7 @@ Main effect estimates were computed using Yates's algorithm \cite{montgomery2017
 
 Factor C (APViT guidance) produced the largest main effect at +7.889 percentage points (pp), followed by factor D (dataset) at -6.297 pp, indicating that the AffectNet-7 subset yields higher accuracy than AffectNet-8. Factors A (pretrained backbone weights) and B (local-global feature extraction modules) showed negligible effects of +0.129 pp and +0.056 pp, respectively. All interaction effects were also negligible: the C×D interaction was +0.025 pp, and all remaining two-factor and higher-order interactions fell below 0.18 pp in absolute value. The within-cell standard deviations, obtained after pooling A and B, ranged from 0.08\% to 0.25\%, confirming that A and B contribute no meaningful variance to the response.\\
 
-The C×D interaction quantifies whether the benefit of APViT guidance varies across datasets. The near-zero interaction estimate of +0.025 pp indicates that the contributions of C and D are negligible. Figure \ref{fig:results-p1-interaction} shows the interaction line plot for C and D after pooling A and B.\\
+The C×D interaction quantifies whether the benefit of APViT guidance varies across datasets. The near-zero interaction estimate of +0.025 pp indicates that the contributions of C and D are negligible. Figure \ref{fig:results-p1-interaction} shows the interaction line plot for C and D after pooling A and B.
 
 \begin{figure}[h!]
     \centering
@@ -105,7 +105,7 @@ Training and validation accuracy curves were recorded for all 16 Phase I runs vi
     \label{fig:results-p1-curves}
 \end{figure}
 
-We observe two distinct training behaviors depending on the state of factor C. Runs with APViT guidance (C+) converged to their best validation accuracy between epochs 13 and 27, with a mean train-validation gap of approximately 5-7\%. Runs without APViT guidance (C-) exhibited severe overfitting, with training accuracy reaching 75-76\% while validation accuracy plateaued early, yielding a mean train-validation gap of approximately 24\%. The learning rate schedule, which applies a decay factor at epochs 10 and 20, produced visible accuracy steps in C- runs that are attenuated or absent in C+ runs. Across all conditions, runs trained on AffectNet-8 plateaued approximately 6 pp below their AffectNet-7 counterparts.\\
+We observe two distinct training behaviors depending on the state of factor C. Runs with APViT guidance (C+) converged to their best validation accuracy between epochs 13 and 27, with a mean train-validation gap of approximately 5-7\%. Runs without APViT guidance (C-) exhibited severe overfitting, with training accuracy reaching 75-76\% while validation accuracy plateaued early, yielding a mean train-validation gap of approximately 24\%. The learning rate schedule, which applies a decay factor at epochs 10 and 20, produced visible accuracy steps in C- runs that are attenuated or absent in C+ runs. Across all conditions, runs trained on AffectNet-8 plateaued approximately 6 pp below their AffectNet-7 counterparts.
 
 \subsection{Hyperparameter optimization and the M-LDG}
 \label{section:results-phase1-optim}
@@ -152,14 +152,14 @@ The resulting optimized network, achieved 64.34\% on AffectNet-7 (best epoch: 9)
     \label{tab:results-p1-hyperparams}
 \end{table}
 
-The optimized configurations differ from the defaults in three main respects: the learning rate is 3 to 4 times lower, the weight decay is 10 to 70 times lower, and the LR reduction factor is substantially less aggressive (0.209 for AffectNet-7 and 0.450 for AffectNet-8, compared to the default of 0.1). The AffectNet-7 M-LDG converged rapidly, reaching within 0.5 pp of its best accuracy by epoch 6, with a final train-validation gap of 2.71 pp. The AffectNet-8 M-LDG required more epochs to stabilize, with a final gap of 7.19 pp, reflecting the increased difficulty of the 8-class task.\\
+The optimized configurations differ from the defaults in three main respects: the learning rate is 3 to 4 times lower, the weight decay is 10 to 70 times lower, and the LR reduction factor is substantially less aggressive (0.209 for AffectNet-7 and 0.450 for AffectNet-8, compared to the default of 0.1). The AffectNet-7 M-LDG converged rapidly, reaching within 0.5 pp of its best accuracy by epoch 6, with a final train-validation gap of 2.71 pp. The AffectNet-8 M-LDG required more epochs to stabilize, with a final gap of 7.19 pp, reflecting the increased difficulty of the 8-class task.
 
 \section{Statistical assumption tests}
 \label{section:results-assumptions}
 
 Prior to the two-way ANOVA, we verified the normality of residuals and the homogeneity of variance as required by the ANOVA assumptions. Both assumption tests were conducted on the Phase I data after pooling the negligible factors A and B into the error term, retaining C and D as the active factors.\\
 
-The Shapiro-Wilk test for normality of residuals yielded $W = 0.9447$ ($p = 0.410$), providing no evidence against the normality assumption. Levene's test for homogeneity of variance produced $F(3, 12) = 1.317$ ($p = 0.314$), indicating no significant difference in variance across the four C×D cells. Both assumptions for parametric ANOVA are therefore satisfied. Figure \ref{fig:results-assumptions} shows the normal Q-Q plot of residuals and the residuals-versus-fitted plot used to assess these assumptions visually.\\
+The Shapiro-Wilk test for normality of residuals yielded $W = 0.9447$ ($p = 0.410$), providing no evidence against the normality assumption. Levene's test for homogeneity of variance produced $F(3, 12) = 1.317$ ($p = 0.314$), indicating no significant difference in variance across the four C×D cells. Both assumptions for parametric ANOVA are therefore satisfied. Figure \ref{fig:results-assumptions} shows the normal Q-Q plot of residuals and the residuals-versus-fitted plot used to assess these assumptions visually.
 
 \begin{figure}[h!]
     \centering
@@ -201,7 +201,7 @@ A two-way ANOVA was performed on the Phase I data with best validation accuracy 
 
 Both main effects were highly significant, while their interaction was not. APViT guidance (C) yielded $F(1, 12) = 9196.84$ ($p < 2 \times 10^{-16}$), the dataset (D) yielded $F(1, 12) = 5858.17$ ($p < 2 \times 10^{-16}$), and the C×D interaction was negligible ($F(1, 12) = 0.092$, $p = 0.767$). The residual term in Table \ref{tab:results-anova} is very small: repeated runs under the same condition landed within roughly 0.16 percentage points of one another, so the observed differences between conditions are highly reproducible rather than the product of random fluctuation.\\
 
-To measure how much each factor matters in practice, we report effect sizes as eta-squared ($\eta^2$), the proportion of the total variation in accuracy explained by a factor. Dividing each factor's sum of squares in Table \ref{tab:results-anova} by the total sum of squares (407.89) gives $\eta^2 = 0.610$ for APViT guidance and $\eta^2 = 0.389$ for the dataset, with the interaction below 0.001. Together these two factors explain about 99.9\% of the systematic variation in accuracy. We therefore reject the null hypothesis that all treatment combinations yield the same mean accuracy: both APViT guidance and the choice of dataset produce statistically significant differences in performance.\\
+To measure how much each factor matters in practice, we report effect sizes as eta-squared ($\eta^2$), the proportion of the total variation in accuracy explained by a factor. Dividing each factor's sum of squares in Table \ref{tab:results-anova} by the total sum of squares (407.89) gives $\eta^2 = 0.610$ for APViT guidance and $\eta^2 = 0.389$ for the dataset, with the interaction below 0.001. Together these two factors explain about 99.9\% of the systematic variation in accuracy. We therefore reject the null hypothesis that all treatment combinations yield the same mean accuracy: both APViT guidance and the choice of dataset produce statistically significant differences in performance.
 
 \section{Phase II: EfficientFace guidance comparison}
 \label{section:results-phase2}
@@ -227,8 +227,7 @@ Phase II employed a $2^2$ factorial design with two replicates per treatment com
     \label{tab:results-p2-cells}
 \end{table}
 
-The M-LDG-guided conditions achieved cell means of 62.71\% on AffectNet-7 (SD = 0.404\%) and 55.90\% on AffectNet-8 (SD = 0.124\%). The APViT-guided conditions achieved 62.10\% (SD = 0.303\%) and 55.80\% (SD = 0.442\%), respectively. 
-%The $2^2$ factorial effects were estimated by ordinary least squares (\texttt{lm(best\_accuracy \textasciitilde{} G * D)}) using $\pm1$ contrast coding (G: APViT $=-1$, M-LDG $=+1$; D: AffectNet-7 $=-1$, AffectNet-8 $=+1$), so that each coefficient equals half the difference between the corresponding factor levels and the level contrast (high $-$ low) is twice the coefficient. The estimated grand mean was 59.129\%. The guidance-network coefficient was $+0.179$ pp (SE $=0.121$, $t(4) = 1.480$, $p = 0.213$), equivalent to a $+0.357$ pp contrast in favor of M-LDG. The dataset coefficient was $-3.278$ pp (SE $=0.121$, $t(4) = -27.167$, $p = 1.09\times10^{-5}$), equivalent to a $-6.556$ pp contrast that is consistent with the dataset effect observed in Phase I. The G$\times$D interaction coefficient was $-0.129$ pp (SE $=0.121$, $t(4) = -1.066$, $p = 0.347$); its negative sign indicates that the M-LDG advantage was +0.614 pp on AffectNet-7 but only +0.100 pp on AffectNet-8. The model accounted for almost all between-cell variance ($R^2 = 0.995$, adjusted $R^2 = 0.991$; $F(3,4) = 247.1$, $p = 5.39\times10^{-5}$), but only the dataset factor reached statistical significance. 
+The M-LDG-guided conditions achieved cell means of 62.71\% on AffectNet-7 (SD = 0.404\%) and 55.90\% on AffectNet-8 (SD = 0.124\%). The APViT-guided conditions achieved 62.10\% (SD = 0.303\%) and 55.80\% (SD = 0.442\%), respectively.\\
 Figure \ref{fig:results-p2-bars} shows the cell means with error bars.
 
 \begin{figure}[h!]
@@ -245,14 +244,14 @@ Welch's t-tests were applied separately for each dataset to compare the mean acc
 
 For AffectNet-7, the mean accuracy was 62.71\% for M-LDG (SD = 0.404\%) and 62.10\% for APViT (SD = 0.303\%). The observed difference was +0.614 pp in favor of the M-LDG. The Welch t-test yielded $t(1.85) = -1.720$ with $p = 0.237$ and a 95\% confidence interval of $[-1.044,\ 2.272]$ pp. For AffectNet-8, the mean accuracy was 55.90\% for M-LDG (SD = 0.124\%) and 55.80\% for APViT (SD = 0.442\%). The observed difference was +0.100 pp in favor of the M-LDG. The Welch t-test yielded $t(1.16) = -0.308$ with $p = 0.804$ and a 95\% confidence interval of $[-2.917,\ 3.117]$ pp.\\
 
-Neither comparison reached statistical significance. The wide confidence intervals spanning zero in both cases indicate that the direction of the difference cannot be established at the current sample size. With $n = 2$ replicates per cell, the Phase II tests are severely underpowered and can only detect very large effects; the failure to reach significance should be interpreted as inconclusive rather than as evidence of equivalence between M-LDG and APViT as guidance networks for EfficientFace.\\
+Neither comparison reached statistical significance. The wide confidence intervals spanning zero in both cases indicate that the direction of the difference cannot be established at the current sample size. With $n = 2$ replicates per cell, the Phase II tests are severely underpowered and can only detect very large effects; the failure to reach significance should be interpreted as inconclusive rather than as evidence of equivalence between M-LDG and APViT as guidance networks for EfficientFace.
 
 \subsection{Hyperparameter optimization}
 \label{section:results-phase2-optim}
 
 Following the same Bayesian sweep procedure as Phase I, hyperparameter optimization was applied to two Phase II conditions: M-LDG with AffectNet-7 and APViT with AffectNet-8. Five 20-epoch sweep trials were conducted per combination, followed by 65-epoch confirmatory runs using the best identified configuration.\\
 
-The optimized confirmatory runs achieved 62.29\% for M-LDG on AffectNet-7 and 55.01\% for APViT on AffectNet-8. These are lower than the corresponding Phase II baseline runs conducted with default hyperparameters, which achieved 63.00\% and 56.11\%, respectively. The differences represent decreases of -0.43 pp and -0.45 pp. Hyperparameter optimization in Phase II therefore produced a negative result: the default training configuration (learning rate 0.1, momentum 0.9, weight decay $10^{-4}$, LR factor 0.1, adjustment frequency 10) outperformed all optimized configurations identified by the sweep.\\
+The optimized confirmatory runs achieved 62.29\% for M-LDG on AffectNet-7 and 55.01\% for APViT on AffectNet-8. These are lower than the corresponding Phase II baseline runs conducted with default hyperparameters, which achieved 63\% and 56.11\%, respectively. The differences represent decreases of -0.43 pp and -0.45 pp. Hyperparameter optimization in Phase II therefore produced a negative result: the default training configuration (learning rate 0.1, momentum 0.9, weight decay $10^{-4}$, LR factor 0.1, adjustment frequency 10) outperformed all optimized configurations identified by the sweep.
 
 \section{Additional obtained metrics}
 \label{section:results-metrics}
@@ -279,18 +278,18 @@ To summarize the accuracy gains at each stage of the proposed pipeline, Table \r
     APViT trained from scratch                  & 64.2 & 57.31 \\
     \bottomrule
     \end{tabular}
-    \caption[Cross-phase accuracy progression]{Accuracy (\%) at each stage of the proposed knowledge transfer pipeline for both AffectNet subsets. Published baselines from \cite{eff-face2021} and \cite{apvit2023} are provided for reference. We also present the performance of our own APViT model trained from scratch on AffectNet 7 and 8.}
+    \caption[Cross-phase accuracy progression]{Accuracy (\%) at each stage of the proposed knowledge transfer pipeline for both AffectNet subsets. Published baselines from \cite{eff-face2021} and \cite{apvit2023} are provided for reference. We also present the performance of our own APViT model trained from scratch on AffectNet-7 and AffectNet-8.}
     \label{tab:results-progression}
 \end{table}
 
-The unguided M-LDG baseline (C=False) achieved 55.51\% on AffectNet-7 and 49.24\% on AffectNet-8. Adding APViT knowledge distillation (C=True) raised accuracy to 63.31\% and 57.06\%, respectively. The M-LDG, after hyperparameter optimization, reached 64.34\% (AffectNet-7) and 57.71\% (AffectNet-8). EfficientFace trained with M-LDG-generated soft labels achieved 63.00\% (AffectNet-7) and 55.99\% (AffectNet-8), while EfficientFace trained with APViT-generated soft labels achieved 62.31\% and 56.11\%. For reference, the original EfficientFace authors report 63.7\% on AffectNet \cite{eff-face2021} and the APViT teacher used in this study reports 66.91\% on AffectNet \cite{apvit2023}.\\
+The unguided M-LDG baseline (C=False) achieved 55.51\% on AffectNet-7 and 49.24\% on AffectNet-8. Adding APViT knowledge distillation (C=True) raised accuracy to 63.31\% and 57.06\%, respectively. The M-LDG, after hyperparameter optimization, reached 64.34\% (AffectNet-7) and 57.71\% (AffectNet-8). EfficientFace trained with M-LDG-generated soft labels achieved 63.00\% (AffectNet-7) and 55.99\% (AffectNet-8), while EfficientFace trained with APViT-generated soft labels achieved 62.31\% and 56.11\%. For reference, the original EfficientFace authors report 63.7\% on AffectNet \cite{eff-face2021} and the APViT teacher used in this study reports 66.91\% on AffectNet \cite{apvit2023}.
 
 \subsection{Per-class behavior}
 \label{section:results-metrics-perclass}
 
 In addition to the top-1 accuracy response variable, per-class validation confusion matrices were logged for all runs via WandB. We report here the confusion matrices for the best M-LDG-guided EfficientFace variants obtained in Phase II: the AffectNet-7 model (63\% best accuracy) and the AffectNet-8 model (55.99\% best accuracy). These matrices capture the distribution of correct and incorrect predictions across expression classes and complement the main accuracy reported throughout this chapter.\\
 
-Figure \ref{fig:results-cm-an7} shows the normalized confusion matrix for the best M-LDG-guided EfficientFace on AffectNet-7 and figure \ref{fig:results-cm-an8} shows the corresponding matrix for AffectNet-8.\\
+Figure \ref{fig:results-cm-an7} shows the normalized confusion matrix for the best M-LDG-guided EfficientFace on AffectNet-7 and figure \ref{fig:results-cm-an8} shows the corresponding matrix for AffectNet-8.
 
 \begin{figure}[h!]
     \centering
@@ -407,12 +406,12 @@ Table \ref{tab:results-complexity} reports the parameter and MFLOPs (floating-po
 
 To provide evidence of the spatial attention patterns learned by the main networks in our study, we apply class activation maps (CAMs) \cite{cams2016}. CAM visualizations highlight the image regions that contributed most strongly to the network's predicted class, offering a spatial perspective on model behavior that complements the quantitative accuracy metrics reported in the preceding sections.\\
 
-Figure \ref{fig:results-cam} presents a grid of CAM visualizations for four of the five networks presented in the cross phase comparison (see table \ref{tab:results-progression}).\\
+Figure \ref{fig:results-cam} presents a grid of CAM visualizations for four of the five networks presented in the cross phase comparison (see table \ref{tab:results-progression}).
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.65\columnwidth]{../images/chap_results/mixedcamgrid.png}
-    \caption[CAM visualizations]{Class activation map (CAM) visualizations for the four of the five main networks used in the cross phase comparison (see table \ref{tab:results-progression}). Each panel shows one validation sample with the model's spatial attention overlaid. Warmer colors indicate higher activation. Hit and miss labels under each image indicate if the sample is correctly or incorrectly classified.}
+    \caption[CAM visualizations]{Class activation map (CAM) visualizations for four of the five main networks used in the cross phase comparison (see table \ref{tab:results-progression}). Each panel shows one validation sample with the model's spatial attention overlaid. Warmer colors indicate higher activation. Hit and miss labels under each image indicate if the sample is correctly or incorrectly classified.}
     \label{fig:results-cam}
 \end{figure}
 
